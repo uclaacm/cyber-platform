@@ -185,11 +185,11 @@ fn get_scoreboard(mut client: Client, session: String) -> Result<impl Reply, Rej
 				thead {
 					tr {
 						th class="place" { "#" }
-						th class="score" { "Score" }
 						th class="team" { "Team" }
+						th class="score" { "Score" }
 						@for challenge in &challenges {
 							@let title: String = challenge.get("title");
-							th class="challenge" { (title) }
+							th class="challenge" { span { (title) } }
 						}
 					}
 				}
@@ -201,15 +201,12 @@ fn get_scoreboard(mut client: Client, session: String) -> Result<impl Reply, Rej
 						@let place: i64 = team.get("place");
 						tr {
 							td class="place" { (place) }
-							td class="score" { (score) }
 							td class="team" { (name) }
+							td class="score" { (score) }
 							@for challenge in &challenges {
 								@let id: i32 = challenge.get("id");
 								@let mask: i64 = 1 << (id - 1);
-								td class="challenge" { 
-									@if mask & solves > 0 { "✓" }
-									@else { "✗" }
-								}
+								td class="challenge" solved?[mask & solves > 0];
 							}
 						}
 					}

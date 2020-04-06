@@ -32,7 +32,7 @@ nav {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	justify-content:space-between;
+	justify-content: space-between;
 }
 
 a.banner {
@@ -118,7 +118,7 @@ nav ul li:last-of-type a {
 .challenges > ul > li > a h1.value {
 	font-size: 1.75em;
 	color: inherit;
-	margin-top: 30%;
+	margin-top: 27.5%;
 	margin-bottom: 5%;
 }
 
@@ -206,17 +206,19 @@ nav ul li:last-of-type a {
 }
 
 .challenges dialog {
+	position: fixed;
 	color: white;
 	background-color: #242424;
 	opacity: 95%;
 	border: 2px solid #FFBA44;
 	position: fixed;
 	z-index: 2;
-	transform: translate(-50%, -50%);
-	width: min(80vw, 768px * .8);
-	top: 50%;
-	left: 50%;
+	width: 80vw;
+	max-width: calc(768px * .8);
+	max-height: 90vh;
 	border-radius: 2px;
+	top: 50%;
+	transform: translate(0, -50%);
 }
 
 .challenges dialog h1 {
@@ -320,4 +322,105 @@ nav ul li:last-of-type a {
 	font-size: 2em;
 	visibility: visible;
 	padding-right: .3em;
+}
+
+.scoreboard {
+	overflow-x: scroll;
+}
+
+.scoreboard table {
+	border-collapse: collapse;
+}
+
+.scoreboard .team {
+	max-width: 12rem;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.scoreboard .score {
+	border-right: 2px solid #FFBA44;
+}
+
+.scoreboard .challenge {
+	border-right: 1px dashed #FFBA44;
+}
+
+.scoreboard th,
+.scoreboard td {
+	border-bottom: 1px dashed #FFBA44;
+}
+
+.scoreboard th:not(.challenge) {
+	text-align: left;
+	vertical-align: bottom;
+	padding-right: 1rem;
+	padding-bottom: .3rem;
+}
+
+.scoreboard th.challenge {
+	font-weight: normal;
+	max-height: 6rem;
+}
+
+.scoreboard th.challenge,
+.scoreboard th.challenge span {
+	text-align: left;
+	vertical-align: bottom;
+	writing-mode: vertical-rl;
+}
+
+.scoreboard th.challenge {
+	padding-bottom: .5rem;
+	padding-left: .5rem;
+	padding-right: .5rem;
+}
+
+.scoreboard th.challenge span {
+	transform: scale(-1, -1);
+	font-size: .8rem;
+}
+
+.scoreboard td:not(.challenge) {
+	padding-right: 1rem;
+}
+
+.scoreboard td.challenge[solved] {
+	background-color: #FFBA44;
+	border: 1px solid #FFBA44;
+}
+
+.profile form input,
+.profile form button,
+.login form input,
+.login form button,
+.register form input,
+.register form button {
+	font-family: 'Chivo', sans-serif;
+	font-size: 1rem;
+	display: block;
+	margin-top: .5rem;
+	margin-bottom: 1.25rem;
+	padding: .5rem;
+	border: none;
+	border-radius: 2px;
+}
+
+.profile form input,
+.login form input,
+.register form input {
+	width: calc(100% - 1rem);
+}
+
+.profile form input:focus,
+.login form input:focus,
+.register form input:focus {
+	outline-color: #FFBA44;
+}
+
+.profile form button,
+.login form button,
+.register form button {
+	background-color: #FFBA44;
 }
