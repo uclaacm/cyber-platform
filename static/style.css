@@ -1,0 +1,323 @@
+@import url('https://fonts.googleapis.com/css2?family=Chivo:wght@400;700&family=Poppins:wght@400;700&display=swap');
+
+body {
+	font-family: 'Chivo', sans-serif;
+	color: white;
+	background-color: #242424;
+	margin: 0 auto;
+	padding: 2rem;
+	max-width: 768px;
+}
+
+h1, h2 {
+	font-family: 'Poppins', sans-serif;
+	color: #FFBA44;
+}
+
+a {
+	color: #FFBA44;
+	text-decoration: none;
+}
+
+a:hover {
+	opacity: .8;
+	transition: .5s;
+}
+
+p {
+	line-height: 1.5rem;
+}
+
+nav {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content:space-between;
+}
+
+a.banner {
+	font-family: 'Poppins', sans-serif;
+	font-size: 1.5rem;
+	color: #FFBA44;
+	display: flex;
+	align-items: center;
+	padding-right: 1rem;
+}
+
+a.banner img {
+	width: 2rem;
+	height: 2rem;
+	padding-right: .5rem;
+}
+
+nav ul {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	padding: 0;
+	list-style: none;
+}
+
+nav ul li + li {
+	padding-left: .9rem;
+}
+
+nav ul li a {
+	color: #EDCD98;
+}
+
+nav ul li:last-of-type a {
+	font-weight: 700;
+	color: #242424;
+	background-color: #FFBA44;
+	padding: .25rem .5rem;
+	border-radius: 2px;
+}
+
+.challenges > ul {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	padding: 0;
+	list-style: none;
+}
+
+.challenges > ul > li {
+	position: relative;
+	height: 0;
+}
+
+.challenges > ul > li > a {
+	color: #242424;
+	background-color: #FFBA44;
+	position: absolute;
+	display: block;
+	z-index: 1;
+	transform: rotate(45deg);
+	width: calc(90% * (1/1.4142135623730950488016887242097));
+	height: calc(90% * (1/1.4142135623730950488016887242097));
+	top: calc((100% - 90% * (1/1.4142135623730950488016887242097)) / 2);
+	left: calc((100% - 90% * (1/1.4142135623730950488016887242097)) / 2);
+	border-radius: 5%;
+}
+
+.challenges > ul > li > a[solved] {
+	color: #FFBA44;
+	background-color: #242424 !important;
+	border: 2px solid #FFBA44;
+}
+
+.challenges > ul > li > a > div {
+	text-align: center;
+	position: absolute;
+	transform: rotate(-45deg);
+	width: 100%;
+	height: 100%;
+}
+
+.challenges > ul > li > a h1.value {
+	font-size: 1.75em;
+	color: inherit;
+	margin-top: 30%;
+	margin-bottom: 5%;
+}
+
+.challenges > ul > li > a p.tags {
+	font-size: 1em;
+	font-style: italic;
+	color: inherit;
+	margin-top: 0;
+	line-height: 20%;
+}
+
+.challenges > ul > li > a p.tags span:not(:first-child) {
+	display: none;
+}
+
+@media (max-width: 599px) {
+	.challenges > ul > li {
+		width: 50%;
+		padding-top: 50%;
+		margin-bottom: calc(-50% / 2);
+	}
+
+	.challenges > ul > li:nth-child(3n) {
+		margin-left: calc(50% / 2);
+	}
+
+	.challenges > ul > li:nth-child(3n) {
+		margin-right: calc(50% / 2);
+	}
+
+	.challenges > ul > li:nth-child(3n) > a {
+		background-color: #EDCD98;
+	}
+
+	.challenges > ul > li > a {
+		font-size: calc(6vw / 2);
+	}
+}
+
+@media (min-width: 600px) and (max-width: 767px) {
+	.challenges > ul > li {
+		width: 33%;
+		padding-top: 33%;
+		margin-bottom: calc(-33% / 2);
+	}
+
+	.challenges > ul > li:nth-child(5n+4) {
+		margin-left: calc(33% / 2);
+	}
+
+	.challenges > ul > li:nth-child(5n) {
+		margin-right: calc(33% / 2);
+	}
+
+	.challenges > ul > li:nth-child(5n+4) > a,
+	.challenges > ul > li:nth-child(5n) > a {
+		background-color: #EDCD98;
+	}
+
+	.challenges > ul > li > a {
+		font-size: calc(6vw / 3);
+	}
+}
+
+@media (min-width: 768px) {
+	.challenges > ul > li {
+		width: 25%;
+		padding-top: 25%;
+		margin-bottom: calc(-25% / 2);
+	}
+
+	.challenges > ul > li:nth-child(7n+5) {
+		margin-left: calc(25% / 2);
+	}
+
+	.challenges > ul > li:nth-child(7n) {
+		margin-right: calc(25% / 2);
+	}
+
+	.challenges > ul > li:nth-child(7n+5) > a,
+	.challenges > ul > li:nth-child(7n+6) > a,
+	.challenges > ul > li:nth-child(7n+7) > a {
+		background-color: #EDCD98;
+	}
+}
+
+.challenges dialog {
+	color: white;
+	background-color: #242424;
+	opacity: 95%;
+	border: 2px solid #FFBA44;
+	position: fixed;
+	z-index: 2;
+	transform: translate(-50%, -50%);
+	width: min(80vw, 768px * .8);
+	top: 50%;
+	left: 50%;
+	border-radius: 2px;
+}
+
+.challenges dialog h1 {
+	margin-top: 0;
+	margin-bottom: .5rem;
+}
+
+.challenges dialog p.value,
+.challenges dialog p.solves {
+	font-style: italic;
+	display: inline-block;
+	margin: 0;
+}
+
+.challenges dialog p.value {
+	padding-right: .5rem;
+}
+
+.challenges dialog p.value::after {
+	content: " points,";
+}
+
+.challenges dialog p.value[data="1"]::after {
+	content: " point,";
+}
+
+.challenges dialog p.solves::after {
+	content: " solves";
+}
+
+.challenges dialog p.solves[data="1"]::after {
+	content: " solve";
+}
+
+.challenges dialog p.author {
+	font-style: italic;
+	margin: 0;
+}
+
+.challenges dialog p.author::before {
+	content: "Author: ";
+}
+
+.challenges dialog p.tags {
+	margin: 0;
+}
+
+.challenges dialog p.tags::before {
+	content: "Tags: ";
+	font-style: italic;
+}
+
+.challenges dialog p.tags span {
+	font-size: .8rem;
+	color: #242424;
+	background-color: #FFBA44;
+	margin: 0 .25rem;
+	padding: .1rem .5rem;
+	border-radius: .8rem;
+}
+
+.challenges dialog form {
+	margin-top: 1.5rem;
+	display: flex;
+}
+
+.challenges dialog form input[type=text]:focus,
+.challenges dialog form input[type=text]:active {
+	outline: none;
+}
+
+.challenges dialog form input[type=text] {
+	font-family: 'Chivo', sans-serif;
+	font-size: .8rem;
+	flex-grow: 1;
+	padding: .5rem;
+	border-top-left-radius: 2px;
+	border-bottom-left-radius: 2px;
+	border: none;
+}
+
+.challenges dialog form button {
+	font-family: 'Chivo', sans-serif;
+	font-size: .8rem;
+	color: #242424;
+	background-color: #FFBA44;
+	border-top-right-radius: 2px;
+	border-bottom-right-radius: 2px;
+	border: none;
+}
+
+.challenges dialog a.close {
+	visibility: hidden;
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+.challenges dialog a.close::after {
+	content: "×";
+	font-size: 2em;
+	visibility: visible;
+	padding-right: .3em;
+}
