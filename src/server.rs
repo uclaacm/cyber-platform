@@ -191,7 +191,7 @@ fn get_scoreboard(mut client: Client, session: String) -> Result<impl Reply, Rej
 						th class="score" { "Score" }
 						@for challenge in &challenges {
 							@let title: String = challenge.get("title");
-							th class="challenge" { span { (title) } }
+							th class="challenge" { div { (title) } }
 						}
 					}
 				}

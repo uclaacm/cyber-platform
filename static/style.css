@@ -352,11 +352,12 @@ nav ul li:last-of-type a {
 }
 
 .scoreboard {
-	overflow-x: scroll;
+	overflow-x: auto;
 }
 
 .scoreboard table {
 	border-collapse: collapse;
+	margin-bottom: 1rem;
 }
 
 .scoreboard .team {
@@ -388,26 +389,26 @@ nav ul li:last-of-type a {
 
 .scoreboard th.challenge {
 	font-weight: normal;
-	max-height: 6rem;
+	font-size: .8rem;
+	position: relative;
+}
+
+.scoreboard th.challenge div {
+	text-align: left;
+	writing-mode: vertical-rl;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	padding: 0.6rem 0.5rem;
+	transform: rotate(180deg);
 }
 
 .scoreboard th.challenge,
-.scoreboard th.challenge span {
-	text-align: left;
-	vertical-align: bottom;
-	writing-mode: vertical-rl;
+.scoreboard th.challenge div {
+	width: 2rem;
+	height: 6rem;
 }
 
-.scoreboard th.challenge {
-	padding-bottom: .5rem;
-	padding-left: .5rem;
-	padding-right: .5rem;
-}
-
-.scoreboard th.challenge span {
-	transform: scale(-1, -1);
-	font-size: .8rem;
-}
 
 .scoreboard td:not(.challenge) {
 	padding-right: 1rem;
