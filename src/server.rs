@@ -104,7 +104,6 @@ fn get_challenges(mut client: Client, session: String, invalid: String) -> Resul
 		ORDER BY value ASC, slug ASC",
 		&[&session]));
 	Ok(with_header(page("Challenges", html! {
-		style { "dialog{display:none;}dialog:target{display:block;}" }
 		h1 { "Challenges" }
 		section class="challenges" {
 			ul {
@@ -129,30 +128,33 @@ fn get_challenges(mut client: Client, session: String, invalid: String) -> Resul
 								}
 							}
 						}
-						dialog open="open" id=(slug) {
-							h1 { (title) }
-							p.value data=(value) { (value) }
-							p.solves data=(solves) { (solves) }
-							p.description { (PreEscaped(description)) }
-							p.author { (author) }
-							p.tags {
-								@for tag in &tags {
-									span { (tag) }
+						div class="modal-container" id=(slug) {
+							dialog open="open" id=(slug) {
+								h1 { (title) }
+								p.value data=(value) { (value) }
+								p.solves data=(solves) { (solves) }
+								p.description { (PreEscaped(description)) }
+								p.author { (author) }
+								p.tags {
+									@for tag in &tags {
+										span { (tag) }
+									}
 								}
-							}
-							@if authenticated && !solved {
-								form method="POST" {
-									input type="hidden" name="slug" value=(slug);
-									input type="text" name="flag" placeholder=(
-										if slug == invalid {
-											"incorrect flag"
-										} else {
-											"flag{...}"
-										});
-									button type="submit" { "Submit" }
+								@if authenticated && !solved {
+									form method="POST" {
+										input type="hidden" name="slug" value=(slug);
+										input type="text" name="flag" placeholder=(
+											if slug == invalid {
+												"incorrect flag"
+											} else {
+												"flag{...}"
+											});
+										button type="submit" { "Submit" }
+									}
 								}
+								a class="close" href="#!" { "Close" }
 							}
-							a class="close" href="#!" { "Close" }
+							a class="modal-bg" href="#!" {}
 						}
 					}
 				}
