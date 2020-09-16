@@ -53,6 +53,7 @@ fn make_body(page: &str, content: Markup, mut client: Client, session: String) -
 						span { b { "ACM" } " Cyber" }
 					}
 					ul {
+						li { a href="/events" { "Events" } }
 						li { a href="/challenges" { "Challenges" } }
 						li { a href="/scoreboard" { "Scoreboard" } }
 						@if count > 0 {
@@ -71,7 +72,7 @@ fn make_body(page: &str, content: Markup, mut client: Client, session: String) -
 }
 
 fn make_reply(body: String) -> impl Reply {
-	reply::with_header(reply::html(body), "content-security-policy", "script-src 'none'")
+	reply::with_header(reply::html(body), "content-security-policy", "script-src 'self' https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")
 }
 
 fn page(title: &str, content: Markup, client: Client, session: String) -> Result<impl Reply, Rejection> {
@@ -82,6 +83,90 @@ fn get_home(mut client: Client, session: String) -> Result<impl Reply, Rejection
 	let home: String = result!(client.query("SELECT home FROM scrap.ctf", &[]))[0].get("home");
 	Ok(page("", html! {
 		(PreEscaped(home))
+	}, client, session)?)
+}
+
+fn get_almanac(mut client: Client, session: String) -> Result<impl Reply, Rejection> {
+	let titles = ["Fall GM", "File Analysis", "Packet Capture", "Memory Forensics", "DEFCON TALK", "Bruin Quest", "CTF After Dark"];
+	let short_titles = ["fallgm", "file", "packet", "mems", "defcon", "bquest", "ctf"];
+	let descriptions = [
+		r#"
+		<h1>Fall GM</h1>
+		welcome welcome
+		"#,
+		r#"
+		<h1>File Analysis</h1>
+		<p>filesss</p>
+		"#,
+		r#"
+		<h1>Packets</h1>
+		<p>filesss</p>
+		"#,
+		r#"
+		<h1>Mems Analysis</h1>
+		<p>filesss<p>
+		"#,
+		r#"
+		<h1>DEFCON Sanjana</h1>
+		<p>filesss<p>
+		"#,
+		r#"
+		<h1>Bruin Quest yeet</h1>
+		<p>filesss<p>
+		"#,
+		r#"
+		<h1>CTF After Dark yo</h1>
+		<p>filesss</p>
+		"#,
+	];
+	Ok(page("Events", html! {
+		script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" {}
+		h1 { "Cyber's Seasonal Almanac" }
+		h2 { "Fall 2020 Edition" }
+		div class="workshop-deet" id="deet" {
+			@for (i, x) in titles.iter().enumerate() {
+				@let title: String = x.to_string();
+				@let desc = descriptions[i];
+				div class="workshop-description" id=(title) {
+					(PreEscaped(desc))
+				}
+			}
+		}
+		section class="challenges" {
+			ul {
+				li {
+					input class="workshop" id="fallgm" name="ws" type="radio" value="Fall GM" {}
+					label class="workshop-s" id="workshop-0" for="fallgm" { // id gives for, name gives group
+						span {"Fall GM"}
+					}
+				}
+				@for (i, x) in titles.iter().enumerate() {
+					@let title: String = x.to_string();
+					@let short: String = short_titles[i].to_string();
+					@let index = i;
+					@if index != 0 {
+						@let group = match index {
+							1 | 4 => "workshop-left workshop-left-1",
+							2 | 5 => "workshop-left workshop-left-2",
+							3 | 6 => "workshop-left workshop-left-3",
+							_ => "workshop-left",
+						};
+						li {
+							input class="workshop" id=(short) name="ws" type="radio" value=(title) {
+								label for=(short) class="workshop-s" id="workshop-top" { 
+									span {(title)}
+								 }
+								 label for=(short) class=(group) { 
+									 span {(title)}
+								 }
+							}
+						}
+					}
+					
+				}
+			}
+		}
+		script src="/static/almanac.js" {}
 	}, client, session)?)
 }
 
@@ -494,6 +579,7 @@ pub fn run(port: u16, pool: ClientPool) {
 		.or(get.clone().and(path("profile")).and(end()).and_then(get_profile))
 		.or(get.clone().and(path("register")).and(end()).and_then(get_register))
 		.or(get.clone().and(path("login")).and(end()).and_then(get_login))
+		.or(get.clone().and(path("events")).and(end()).and_then(get_almanac))
 		.or(post.clone().and(path("challenges")).and(end())
 			.and(body::content_length_limit(4096))
 			.and(body::form()).and_then(submit))

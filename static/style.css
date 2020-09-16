@@ -82,6 +82,19 @@ nav ul li:last-of-type a {
 	list-style: none;
 }
 
+div.almanac {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	padding: 0;
+	list-style: none;
+}
+
+div.workshop {
+	position: relative;
+	height: 0;
+}
+
 .challenges > ul > li {
 	position: relative;
 	height: 0;
@@ -134,6 +147,134 @@ nav ul li:last-of-type a {
 	display: none;
 }
 
+.challenges > ul > li > input[type=radio] {
+	position: absolute;
+	opacity: 0;
+}
+
+.challenges > ul > li input {
+	position: relative;
+	opacity: 0;
+}
+
+input:required ~ #workshop-top { 
+	pointer-events: none;
+	opacity: 0;
+}
+
+input ~ label.workshop-left { 
+	opacity: 0;
+}
+
+input:required ~ label.workshop-left { 
+	opacity: 1;
+}
+
+input:required ~ label.workshop-left-1{
+	animation-name: slideLeft1;
+	animation-duration: 2s;
+	transition: transform 2s linear;
+	transform: rotate(45deg) translate(0px, 135px);
+	-webkit-transform: rotate(45deg) translate(0px, 135px);
+	-o-transform: rotate(45deg) translate(0px, 135px);
+	-moz-transform: rotate(45deg) translate(0px, 135px);
+}
+
+
+input:required ~ label.workshop-left-2{
+	animation-name: slideLeft2;
+	animation-duration: 2s;
+	transition: transform 2s linear;
+	transform: rotate(45deg) translate(0px, 405px);
+	-webkit-transform: rotate(45deg) translate(0px, 405px);
+	-o-transform: rotate(45deg) translate(0px, 405px);
+	-moz-transform: rotate(45deg) translate(0px, 405px);
+}
+
+input:required ~ label.workshop-left-3{
+	animation-name: slideLeft3;
+	animation-duration: 2s;
+	transition: transform 2s linear;
+	transform: rotate(45deg) translate(0px, 675px);
+	-webkit-transform: rotate(45deg) translate(0px, 675px);
+	-o-transform: rotate(45deg) translate(0px, 675px);
+	-moz-transform: rotate(45deg) translate(0px, 675px);
+}
+
+@keyframes slideLeft1 {
+	from {
+		transform: rotate(45deg) translate(0px, 0px);
+	}
+	to {
+		transform: rotate(45deg) translate(0px, 135px);
+	}
+}
+
+@keyframes slideLeft2 {
+	from {
+		transform: rotate(45deg) translate(0px, 0px);
+	}
+	to {
+		transform: rotate(45deg) translate(0px, 405px);
+	}
+}
+
+@keyframes slideLeft3 {
+	from {
+		transform: rotate(45deg) translate(0px, 0px);
+	}
+	to {
+		transform: rotate(45deg) translate(0px, 675px);
+	}
+}
+
+label.workshop-s, label.workshop-left {
+	color: #242424;
+	background-color: #FFBA44;
+	position: absolute;
+	display: block;
+	z-index: 1;
+	transform: rotate(45deg);
+	width: calc(90% * (1/1.4142135623730950488016887242097));
+	height: calc(90% * (1/1.4142135623730950488016887242097));
+	top: calc((100% - 90% * (1/1.4142135623730950488016887242097)) / 2);
+	left: calc((100% - 90% * (1/1.4142135623730950488016887242097)) / 2);
+	border-radius: 5%;
+}
+
+label#workshop-0 {
+	color: #242424;
+	background-color: #FF8C4C;
+}
+
+input:checked ~ label.workshop-left{
+	color: #242424;
+	background-color: #F44d89 !important;
+}
+
+.workshop-deet {
+	display: none;
+	position: absolute;
+	margin-left: 20%;
+	animation: fadeIn;
+	-webkit-animation-name: fadeIn;
+	animation-duration: 2s;
+}
+
+.workshop-description {
+	display: none;
+	position: fixed;
+	animation: fadeIn;
+	-webkit-animation-name: fadeIn;
+	animation-duration: 2s;
+}
+
+
+@keyframes fadeIn {
+	0% {opacity: 0;}
+	100% {opacity: 1;}
+ }
+
 @media (max-width: 599px) {
 	.challenges > ul > li {
 		width: 50%;
@@ -153,7 +294,7 @@ nav ul li:last-of-type a {
 		background-color: #EDCD98;
 	}
 
-	.challenges > ul > li > a {
+	.challenges > ul > li > a, .workshop-s {
 		font-size: calc(6vw / 2);
 	}
 }
@@ -184,23 +325,26 @@ nav ul li:last-of-type a {
 }
 
 @media (min-width: 768px) {
-	.challenges > ul > li {
+	.challenges > ul > li, .workshop {
 		width: 25%;
 		padding-top: 25%;
 		margin-bottom: calc(-25% / 2);
 	}
 
-	.challenges > ul > li:nth-child(7n+5) {
+	.challenges > ul > li:nth-child(7n+5), .workshop {
 		margin-left: calc(25% / 2);
 	}
 
-	.challenges > ul > li:nth-child(7n) {
+	.challenges > ul > li:nth-child(7n), .workshop {
 		margin-right: calc(25% / 2);
 	}
 
 	.challenges > ul > li:nth-child(7n+5) > a,
 	.challenges > ul > li:nth-child(7n+6) > a,
-	.challenges > ul > li:nth-child(7n+7) > a {
+	.challenges > ul > li:nth-child(7n+7) > a, 
+	.challenges > ul > li:nth-child(7n+5) > label,
+	.challenges > ul > li:nth-child(7n+6) > label,
+	.challenges > ul > li:nth-child(7n+7) > label, .workshop-s {
 		background-color: #EDCD98;
 	}
 }
