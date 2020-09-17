@@ -265,6 +265,7 @@ input:checked ~ label.workshop-left{
 	display: none;
 	position: fixed;
 	animation: fadeIn;
+	width: 30%;
 	-webkit-animation-name: fadeIn;
 	animation-duration: 2s;
 }

@@ -92,31 +92,71 @@ fn get_almanac(mut client: Client, session: String) -> Result<impl Reply, Reject
 	let descriptions = [
 		r#"
 		<h1>Fall GM</h1>
-		welcome welcome
+		<h2>Week 1</h2>
+		<p>Dip your toes <small>(or fully submerge, we won’t judge)</small> into the world of Cybersecurity by attending our <strong>Fall GM!</strong> </p> 
+		<p> We’ll go over what ACM Cyber is all about--and why you should totally be a part of our amazing, <span role="img" aria-label="sparkle">✨</span>beginner-friendly<span role="img" aria-label="sparkle">✨</span> cybersecurity club.</p> 
+		<p> And we have some fun challenges prepared that might make your brain cry but in a good way, we promise.  </p> 
+		<p> They’re also <strong>Avatar: The Last Airbender</strong> themed, because we love you and want you to have fun.</p>
 		"#,
 		r#"
 		<h1>File Analysis</h1>
-		<p>filesss</p>
+		<h2>Cyber Academy Week 2</h2>
+		<p>You use them all the time, they live on your computer, and they have names like .doc, .pdf, .jpg...</p> 
+		<p> Believe or not, files hold a multitude of information in addition to the stuff you see when you simply click on it. </p> 
+		<p>Whether you </p>
+		<p><span>&nbsp;&nbsp;&nbsp;&nbsp;</span> - think you know everything files have to offer, </p>
+		<p><span>&nbsp;&nbsp;&nbsp;&nbsp;</span> - or you’ve never opened a file in your entire life, </p>
+		<p><span>&nbsp;&nbsp;&nbsp;&nbsp;</span> - <small>or you just want to check out ACM Cyber because you think we’re cool (and we are, we’re very cool)</small>, </p>
+		<p>come to our <strong>first</strong> workshop of the year (!) and learn all there is to know about metadata, file carving, and all the fun little things your files might be trying to tell you.</p>
 		"#,
 		r#"
 		<h1>Packets</h1>
-		<p>filesss</p>
+		<h2>Cyber Academy Week 3</h2>
+		<p>What makes a Wi-Fi network unsecure? </p> 
+		<p> How can hackers steal your data traversing a network? </p> 
+		<p> Learn how a simple Google search propagates through the Internet, and what tools <strong>anyone</strong> can use to analyze network traffic.  </p> 
+		<p> Join us for a live demonstration as we use <strong>Wireshark</strong> to capture login information sent over HTTP (Hypertext Transfer Protocol)!
+		</p>
+		<h3>Make sure to install <a href="https://www.wireshark.org/download.html">Wireshark</a> beforehand!</h3>
 		"#,
 		r#"
-		<h1>Mems Analysis</h1>
-		<p>filesss<p>
+		<h1>Memory Analysis</h1>
+		<h2>Cyber Academy Week 5</h2>
+		<p>What secrets can we find from your memory? </p> 
+		<p> No, we’re not interested in whatever you’re hiding in your brain; we’re talking about the memory on your computer! </p> 
+		<p> Whether it be the content of a <strong>text file, your Chrome history, or top secret password</strong> to your computer and social media accounts, if it’s been in the memory, we’ll find it!  </p> 
+		<p> Want to know how? Attend our memory forensics workshop to learn all about analyzing RAM (Random-Access Memory) dumps and how to pick out the <strong>juicy secrets</strong> hiding in the bytes.<p>
+		<h3>Check out our pre-workshop guide <a href="https://docs.google.com/document/d/1m41GtudLR5CPmSANWCeVlg2vEXKIYMxWo0YMFdPi85I/edit">here</a></h3>
 		"#,
 		r#"
-		<h1>DEFCON Sanjana</h1>
-		<p>filesss<p>
+		<h1>"What Makes a Hacker?"</h1>
+		<h2>By DEFCON Special Guest Speaker Sanjana Sarda</h2>
+		<h2>Week 6</h2>
+		<p>Talk to the one and only, chaotic neutral, former president of ACM Cyber and speaker at DEFCON's IoT Village 2020, Sanjana Sarda!  <p>
+		<h3>Officer Testimonials:</h3>
+		<p>Have you ever wondered what it's like to talk to the face of God? - Jeffrey</p>
+		<p> Queen of all things Cyber, our illustrious former empress - Aarin</p>
+		<p> Sanjana is a tree - Ellie </p>
+		<p> leet haxxor tree - William </p>
+		<p><a href="https://youtu.be/0G2g-tLMK70">Link</a> to her talk at IoT Village from last summer :O<p>
 		"#,
 		r#"
-		<h1>Bruin Quest yeet</h1>
-		<p>filesss<p>
+		<h1>Bruin Quest</h1>
+		<h2>An ACM Cyber x Hack x ICPC Collab!</h2>
+		<h2>Week 7</h2>
+		<p>Whether you cannot, or decide not to, leave your house and see what the UCLA campus has to offer, that is okay, because you can now live vicariously through the <strong>brain puzzles</strong> and <strong>creative prompts</strong> we’ve made purely for your enjoyment. </p> 
+		<p> Explore a <strong>virtual UCLA campus</strong> and complete fun challenges to compete for points, prizes, and the glory of being <strong>Bruin Quest Champion</strong>, and who doesn’t love bragging rights for being the smartest, creative-est, and most Bruin-est person this campus has to offer?  </p> 
+		<p> Brought to you by the combined efforts of <strong>Hack, ICPC, and Cyber</strong>, because three metaphorical club brains are much better than one.  </p> 
+		<p> It’s basically a party at this point! (And you should definitely bring your friends.)</p>
 		"#,
 		r#"
-		<h1>CTF After Dark yo</h1>
-		<p>filesss</p>
+		<h1>CTF After Dark</h1>
+		<h2>Week 8-9</h2>
+		<p>This is the moment you’ve been training for.</p> 
+		<p>Get ready for some high octane, mind-boggling tests of hacking skill! Collaborate with your friends in our beginner friendly <strong>Capture The Flag</strong> (CTF) competition.</p> 
+		<p>Challenges will be targeted at the skills that you’ve learned from our Fall workshops. Top teams get bragging rights as well as <strong>prizes</strong>. </p>
+		<p>And don’t worry if you ever feel stuck or lonely. We’ll be in our discord channel, ready to answer any of your burning questions.
+		</p>
 		"#,
 	];
 	Ok(page("Events", html! {
