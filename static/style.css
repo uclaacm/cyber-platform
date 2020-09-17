@@ -9,9 +9,14 @@ body {
 	max-width: 768px;
 }
 
-h1, h2 {
+h1, h2, h3 {
 	font-family: 'Poppins', sans-serif;
 	color: #FFBA44;
+}
+
+h3 {
+	margin: 0.2rem 0;
+	font-size: 1rem;
 }
 
 a {
@@ -74,7 +79,7 @@ nav ul li:last-of-type a {
 	border-radius: 2px;
 }
 
-.challenges > ul {
+.content > ul {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -95,12 +100,12 @@ div.workshop {
 	height: 0;
 }
 
-.challenges > ul > li {
+.content > ul > li {
 	position: relative;
 	height: 0;
 }
 
-.challenges > ul > li > a {
+.content > ul > li > a {
 	color: #242424;
 	background-color: #FFBA44;
 	position: absolute;
@@ -114,13 +119,13 @@ div.workshop {
 	border-radius: 5%;
 }
 
-.challenges > ul > li > a[solved] {
+.content > ul > li > a[solved] {
 	color: #FFBA44;
 	background-color: #242424 !important;
 	border: 2px solid #FFBA44;
 }
 
-.challenges > ul > li > a > div {
+.content > ul > li > a > div {
 	text-align: center;
 	position: absolute;
 	transform: rotate(-45deg);
@@ -128,14 +133,14 @@ div.workshop {
 	height: 100%;
 }
 
-.challenges > ul > li > a h1.value {
+.content > ul > li > a h1.value {
 	font-size: 1.75em;
 	color: inherit;
 	margin-top: 27.5%;
 	margin-bottom: 5%;
 }
 
-.challenges > ul > li > a p.tags {
+.content > ul > li > a p.tags {
 	font-size: 1em;
 	font-style: italic;
 	color: inherit;
@@ -143,62 +148,39 @@ div.workshop {
 	line-height: 20%;
 }
 
-.challenges > ul > li > a p.tags span:not(:first-child) {
+.content > ul > li > a p.tags span:not(:first-child) {
 	display: none;
 }
 
-.challenges > ul > li > input[type=radio] {
+.content > ul > li > input[type=radio] {
 	position: absolute;
 	opacity: 0;
 }
 
-.challenges > ul > li input {
+.content > ul > li input {
 	position: relative;
 	opacity: 0;
 }
 
-input:required ~ #workshop-top { 
+label.workshop-s, label.workshop-left {
+	cursor: pointer;
+	transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s background-color;
+}
+
+input:required ~ label.workshop-top { 
 	pointer-events: none;
 	opacity: 0;
+	visibility: hidden;
 }
 
 input ~ label.workshop-left { 
 	opacity: 0;
+	visibility: hidden;
 }
 
 input:required ~ label.workshop-left { 
 	opacity: 1;
-}
-
-input:required ~ label.workshop-left-1{
-	animation-name: slideLeft1;
-	animation-duration: 2s;
-	transition: transform 2s linear;
-	transform: rotate(45deg) translate(0px, 135px);
-	-webkit-transform: rotate(45deg) translate(0px, 135px);
-	-o-transform: rotate(45deg) translate(0px, 135px);
-	-moz-transform: rotate(45deg) translate(0px, 135px);
-}
-
-
-input:required ~ label.workshop-left-2{
-	animation-name: slideLeft2;
-	animation-duration: 2s;
-	transition: transform 2s linear;
-	transform: rotate(45deg) translate(0px, 405px);
-	-webkit-transform: rotate(45deg) translate(0px, 405px);
-	-o-transform: rotate(45deg) translate(0px, 405px);
-	-moz-transform: rotate(45deg) translate(0px, 405px);
-}
-
-input:required ~ label.workshop-left-3{
-	animation-name: slideLeft3;
-	animation-duration: 2s;
-	transition: transform 2s linear;
-	transform: rotate(45deg) translate(0px, 675px);
-	-webkit-transform: rotate(45deg) translate(0px, 675px);
-	-o-transform: rotate(45deg) translate(0px, 675px);
-	-moz-transform: rotate(45deg) translate(0px, 675px);
+	visibility: visible;
 }
 
 @keyframes slideLeft1 {
@@ -242,14 +224,40 @@ label.workshop-s, label.workshop-left {
 	border-radius: 5%;
 }
 
-label#workshop-0 {
-	color: #242424;
-	background-color: #FF8C4C;
+.content > ul > li:nth-child(3n + 2) > input:required ~ .workshop-left {
+	animation-name: slideLeft1;
+	animation-duration: 1.2s;
+	transition: transform 1.2s linear, cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s background-color;
+	transform: rotate(45deg) translate(0px, 135px);
+	-webkit-transform: rotate(45deg) translate(0px, 135px);
+	-o-transform: rotate(45deg) translate(0px, 135px);
+	-moz-transform: rotate(45deg) translate(0px, 135px);
 }
 
-input:checked ~ label.workshop-left{
+.content > ul > li:nth-child(3n) > input:required ~ .workshop-left {
+	animation-name: slideLeft2;
+	animation-duration: 1.5s;
+	transition: transform 1.5s linear, cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s background-color;
+	transform: rotate(45deg) translate(0px, 405px);
+	-webkit-transform: rotate(45deg) translate(0px, 405px);
+	-o-transform: rotate(45deg) translate(0px, 405px);
+	-moz-transform: rotate(45deg) translate(0px, 405px);
+}
+
+
+.content > ul > li:nth-child(3n + 1) > input:required ~ .workshop-left {
+	animation-name: slideLeft3;
+	animation-duration: 1.8s;
+	transition: transform 1.8s linear, cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s background-color;
+	transform: rotate(45deg) translate(0px, 675px);
+	-webkit-transform: rotate(45deg) translate(0px, 675px);
+	-o-transform: rotate(45deg) translate(0px, 675px);
+	-moz-transform: rotate(45deg) translate(0px, 675px);
+}
+
+input:checked ~ label.workshop-left, input:checked ~ label.workshop-s {
 	color: #242424;
-	background-color: #F44d89 !important;
+	background-color: #FF8C4C !important;
 }
 
 .workshop-deet {
@@ -267,7 +275,7 @@ input:checked ~ label.workshop-left{
 	animation: fadeIn;
 	width: 30%;
 	-webkit-animation-name: fadeIn;
-	animation-duration: 2s;
+	animation-duration: 1.5s;
 }
 
 
@@ -277,80 +285,80 @@ input:checked ~ label.workshop-left{
  }
 
 @media (max-width: 599px) {
-	.challenges > ul > li {
+	.content > ul > li {
 		width: 50%;
 		padding-top: 50%;
 		margin-bottom: calc(-50% / 2);
 	}
 
-	.challenges > ul > li:nth-child(3n) {
+	.content > ul > li:nth-child(3n) {
 		margin-left: calc(50% / 2);
 	}
 
-	.challenges > ul > li:nth-child(3n) {
+	.content > ul > li:nth-child(3n) {
 		margin-right: calc(50% / 2);
 	}
 
-	.challenges > ul > li:nth-child(3n) > a {
+	.content > ul > li:nth-child(3n) > a {
 		background-color: #EDCD98;
 	}
 
-	.challenges > ul > li > a, .workshop-s {
+	.content > ul > li > a, .workshop-s {
 		font-size: calc(6vw / 2);
 	}
 }
 
 @media (min-width: 600px) and (max-width: 767px) {
-	.challenges > ul > li {
+	.content > ul > li {
 		width: 33%;
 		padding-top: 33%;
 		margin-bottom: calc(-33% / 2);
 	}
 
-	.challenges > ul > li:nth-child(5n+4) {
+	.content > ul > li:nth-child(5n+4) {
 		margin-left: calc(33% / 2);
 	}
 
-	.challenges > ul > li:nth-child(5n) {
+	.content > ul > li:nth-child(5n) {
 		margin-right: calc(33% / 2);
 	}
 
-	.challenges > ul > li:nth-child(5n+4) > a,
-	.challenges > ul > li:nth-child(5n) > a {
+	.content > ul > li:nth-child(5n+4) > a,
+	.content > ul > li:nth-child(5n) > a {
 		background-color: #EDCD98;
 	}
 
-	.challenges > ul > li > a {
+	.content > ul > li > a {
 		font-size: calc(6vw / 3);
 	}
 }
 
 @media (min-width: 768px) {
-	.challenges > ul > li, .workshop {
+	.content > ul > li, .workshop {
 		width: 25%;
 		padding-top: 25%;
 		margin-bottom: calc(-25% / 2);
 	}
 
-	.challenges > ul > li:nth-child(7n+5), .workshop {
+	.content > ul > li:nth-child(7n+5), .workshop {
 		margin-left: calc(25% / 2);
 	}
 
-	.challenges > ul > li:nth-child(7n), .workshop {
+	.content > ul > li:nth-child(7n), .workshop {
 		margin-right: calc(25% / 2);
 	}
 
-	.challenges > ul > li:nth-child(7n+5) > a,
-	.challenges > ul > li:nth-child(7n+6) > a,
-	.challenges > ul > li:nth-child(7n+7) > a, 
-	.challenges > ul > li:nth-child(7n+5) > label,
-	.challenges > ul > li:nth-child(7n+6) > label,
-	.challenges > ul > li:nth-child(7n+7) > label, .workshop-s {
+	.content > ul > li:nth-child(7n+5) > a,
+	.content > ul > li:nth-child(7n+6) > a,
+	.content > ul > li:nth-child(7n+7) > a, 
+	.content > ul > li:nth-child(7n+5) > label,
+	.content > ul > li:nth-child(7n+6) > label,
+	.content > ul > li:nth-child(7n+7) > label, .workshop-s {
 		background-color: #EDCD98;
 	}
 }
 
-.challenges dialog {
+.content dialog {
 	position: fixed;
 	color: white;
 	background-color: #242424;
@@ -366,57 +374,57 @@ input:checked ~ label.workshop-left{
 	transform: translate(0, -50%);
 }
 
-.challenges dialog h1 {
+.content dialog h1 {
 	margin-top: 0;
 	margin-bottom: .5rem;
 }
 
-.challenges dialog p.value,
-.challenges dialog p.solves {
+.content dialog p.value,
+.content dialog p.solves {
 	font-style: italic;
 	display: inline-block;
 	margin: 0;
 }
 
-.challenges dialog p.value {
+.content dialog p.value {
 	padding-right: .5rem;
 }
 
-.challenges dialog p.value::after {
+.content dialog p.value::after {
 	content: " points,";
 }
 
-.challenges dialog p.value[data="1"]::after {
+.content dialog p.value[data="1"]::after {
 	content: " point,";
 }
 
-.challenges dialog p.solves::after {
+.content dialog p.solves::after {
 	content: " solves";
 }
 
-.challenges dialog p.solves[data="1"]::after {
+.content dialog p.solves[data="1"]::after {
 	content: " solve";
 }
 
-.challenges dialog p.author {
+.content dialog p.author {
 	font-style: italic;
 	margin: 0;
 }
 
-.challenges dialog p.author::before {
+.content dialog p.author::before {
 	content: "Author: ";
 }
 
-.challenges dialog p.tags {
+.content dialog p.tags {
 	margin: 0;
 }
 
-.challenges dialog p.tags::before {
+.content dialog p.tags::before {
 	content: "Tags: ";
 	font-style: italic;
 }
 
-.challenges dialog p.tags span {
+.content dialog p.tags span {
 	font-size: .8rem;
 	color: #242424;
 	background-color: #FFBA44;
@@ -425,17 +433,17 @@ input:checked ~ label.workshop-left{
 	border-radius: .8rem;
 }
 
-.challenges dialog form {
+.content dialog form {
 	margin-top: 1.5rem;
 	display: flex;
 }
 
-.challenges dialog form input[type=text]:focus,
-.challenges dialog form input[type=text]:active {
+.content dialog form input[type=text]:focus,
+.content dialog form input[type=text]:active {
 	outline: none;
 }
 
-.challenges dialog form input[type=text] {
+.content dialog form input[type=text] {
 	font-family: 'Chivo', sans-serif;
 	font-size: .8rem;
 	flex-grow: 1;
@@ -445,7 +453,7 @@ input:checked ~ label.workshop-left{
 	border: none;
 }
 
-.challenges dialog form button {
+.content dialog form button {
 	font-family: 'Chivo', sans-serif;
 	font-size: .8rem;
 	color: #242424;
@@ -455,14 +463,14 @@ input:checked ~ label.workshop-left{
 	border: none;
 }
 
-.challenges dialog a.close {
+.content dialog a.close {
 	visibility: hidden;
 	position: absolute;
 	top: 0;
 	right: 0;
 }
 
-.challenges dialog a.close::after {
+.content dialog a.close::after {
 	content: "×";
 	font-size: 2em;
 	visibility: visible;
