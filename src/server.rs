@@ -91,57 +91,55 @@ fn get_almanac(mut client: Client, session: String) -> Result<impl Reply, Reject
 		id, title, short, date, description, link, slides, 
 		CASE WHEN id % 2 = 0 THEN 1 ELSE 0 END AS is_even
 		FROM scrap.event
-		ORDER BY is_even, id ASC",
+		ORDER BY id ASC",
 		&[]));
 	Ok(page("Events", html! {
 		script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" {}
-		h1 { "Events" }
-		h2 { "Fall 2020" }
-		div class="workshop-deet" id="deet" {
-			@for event in &events {
-				@let title: String = event.get("title");
-				@let short: String = event.get("short");
-				@let description: String = event.get("description");
-				@let date: String = event.get("date");
-				@let link: String = event.get("link");
-				@let slides: String = event.get("slides");
-				div class="workshop-description" id=(short) {
-					h1 { (title) }
-					h2 { (date) }
-					@if link == "" {
-						h3 { "Link: Coming Soon!"}
-					} @else {
-						h3 { "Link: " (PreEscaped(link)) }
+		h1 { "Fall 2020 Events" }
+		section class="content" {
+			div class="workshop-deet" id="deet" {
+				@for event in &events {
+					@let title: String = event.get("title");
+					@let short: String = event.get("short");
+					@let id: String = format!("{}-deet", short.replace(" ", "-").to_lowercase());
+					@let description: String = event.get("description");
+					@let date: String = event.get("date");
+					@let link: String = event.get("link");
+					@let slides: String = event.get("slides");
+					div class="workshop-description" id=(id) {
+						h1 { (title) }
+						h3 { (date) }
+						@if link == "" {
+							h3 { "Link: Coming Soon!"}
+						} @else {
+							h3 { "Link: " (PreEscaped(link)) }
+						}
+						@if slides == "" {
+							h3 { "Slides: Coming Soon!"}
+						} @else {
+							h3 { "Slides: " (PreEscaped(slides)) }
+						}
+						p { (PreEscaped(description)) }
 					}
-					@if slides == "" {
-						h3 { "Slides: Coming Soon!"}
-					} @else {
-						h3 { "Slides: " (PreEscaped(slides)) }
-					}
-					p { (PreEscaped(description)) }
 				}
 			}
-		}
-		section class="content" {
 			ul {
 				@if let Some((first_event, rest_events)) = &events.split_first() {
 					@let first_short: String = first_event.get("short");
-					@let first_slug: String = first_short.replace(" ", "").to_lowercase();
+					@let first_slug: String = first_short.replace(" ", "-").to_lowercase();
+					@let first_id: String = format!("{}-deet", first_slug);
 					li {
-						input class="workshop" id=(first_slug) name="ws" type="radio" value=(first_short) {}
-						label class="workshop-s" for=(first_slug) { // id gives for, name gives group
+						input class="workshop" id=(first_slug) name="ws" type="radio" value=(first_id) {}
+						label class="workshop-s workshop-0" for=(first_slug) { // id gives for, name gives group
 							span {(first_short)}
 						}
 					}
 					@for event in rest_events.iter() {
 						@let short: String = event.get("short");
-						@let slug: String = short.replace(" ", "").to_lowercase();
-
+						@let slug: String = short.replace(" ", "-").to_lowercase();
+						@let id: String = format!("{}-deet", slug);
 						li {
-							input class="workshop" id=(slug) name="ws" type="radio" value=(short) {
-								label for=(slug) class="workshop-s workshop-top" { 
-									span {(short)}
-								}
+							input class="workshop" id=(slug) name="ws" type="radio" value=(id) {
 								label for=(slug) class="workshop-left" { 
 									span {(short)}
 								}

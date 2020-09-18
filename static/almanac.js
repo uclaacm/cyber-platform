@@ -1,7 +1,6 @@
 function slide() {
     let radios = [...document.getElementsByName('ws')]
     if (radios.some(x => x.checked)) {
-        console.log(radios)
         document.getElementById('deet').style.display = 'block'
         radios.forEach(x => {
             x.required = true;
@@ -15,10 +14,61 @@ function slide() {
     }
 }
 
-$(document).ready(function () {
+function clear() {
     let radios = [...document.getElementsByName('ws')]
-    radios.filter(x => x.checked).forEach((x) => x.checked = false)
+    radios.forEach((x) => {
+        x.checked = false;
+        x.required = false;
 
-    $("input").change(function (e) { slide() })
+        document.getElementById(x.value).style.display = 'none';
+    })
+}
+
+function refresh() {
+    if (document.location.pathname === '/events') {
+        if (document.location.hash === '') {
+            if (document.referrer.split('/').splice(-1)[0] == 'events' && window.history.state) {
+                let tiles = document.querySelectorAll('.workshop-left');
+                tiles.forEach((x) => {
+                    x.classList.add('workshop-slide-back')
+                })
+            }
+            clear();
+
+        } else {
+            document.getElementById(document.location.hash.replace(/#/gi, '')).checked = true;
+            setTimeout(() => {
+                slide();
+            }, 200);
+        }
+    }
+}
+
+$(document).ready(function () {
+    refresh()
+
+    $("input").change(function (e) {
+        slide();
+        window.history.pushState({ event: true }, "", "#" + e.currentTarget.id.toLowerCase());
+    })
+
+    window.onhashchange = function (e) {
+        if (e.oldURL.split('#').length > 1) {
+            let tiles = document.querySelectorAll('.workshop-left');
+            tiles.forEach((x) => {
+                x.classList.add('workshop-slide-back')
+            })
+        } else {
+            let tiles = document.querySelectorAll('.workshop-slide-back');
+            tiles.forEach((x) => {
+                x.classList.remove('workshop-slide-back')
+            })
+        }
+        refresh();
+    }
+
+    window.onpopstate = function (e) {
+        refresh();
+    };
+
 })
-    

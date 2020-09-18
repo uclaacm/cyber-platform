@@ -79,25 +79,16 @@ nav ul li:last-of-type a {
 	border-radius: 2px;
 }
 
+.content {
+	position: relative;
+}
+
 .content > ul {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
 	padding: 0;
 	list-style: none;
-}
-
-div.almanac {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	padding: 0;
-	list-style: none;
-}
-
-div.workshop {
-	position: relative;
-	height: 0;
 }
 
 .content > ul > li {
@@ -167,16 +158,40 @@ label.workshop-s, label.workshop-left {
 	transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s background-color;
 }
 
+label.workshop-s span, label.workshop-left span {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	position: absolute;
+	transform: rotate(-45deg);
+	width: 100%;
+	height: 100%;
+	font-size: 1.1rem;
+	font-weight: bold;
+	font-family: 'Poppins', sans-serif;
+}
+
 input:required ~ label.workshop-top { 
 	pointer-events: none;
 	opacity: 0;
 	visibility: hidden;
 }
 
-input ~ label.workshop-left { 
+input ~ label.workshop-s { 
+	opacity: 1;
+	visibility: visible;
+}
+
+/* input:required ~ label.workshop-s:not(.workshop-0) { 
 	opacity: 0;
 	visibility: hidden;
-}
+} */
+
+/* input ~ label.workshop-left { 
+	opacity: 0;
+	visibility: hidden;
+} */
 
 input:required ~ label.workshop-left { 
 	opacity: 1;
@@ -210,7 +225,34 @@ input:required ~ label.workshop-left {
 	}
 }
 
-label.workshop-s, label.workshop-left {
+@keyframes slideUp1 {
+	from {
+		transform: rotate(45deg) translate(0px, 135px);
+	}
+	to {
+		transform: rotate(45deg) translate(0px, 0px);
+	}
+}
+
+@keyframes slideUp2 {
+	from {
+		transform: rotate(45deg) translate(0px, 405px);
+	}
+	to {
+		transform: rotate(45deg) translate(0px, 0px);
+	}
+}
+
+@keyframes slideUp3 {
+	from {
+		transform: rotate(45deg) translate(0px, 675px);
+	}
+	to {
+		transform: rotate(45deg) translate(0px, 0px);
+	}
+}
+
+.content label.workshop-s, label.workshop-left {
 	color: #242424;
 	background-color: #FFBA44;
 	position: absolute;
@@ -222,6 +264,40 @@ label.workshop-s, label.workshop-left {
 	top: calc((100% - 90% * (1/1.4142135623730950488016887242097)) / 2);
 	left: calc((100% - 90% * (1/1.4142135623730950488016887242097)) / 2);
 	border-radius: 5%;
+}
+
+.content > ul > li:nth-child(3n + 2) > input ~ .workshop-slide-back {
+	animation-name: slideUp1;
+	animation-duration: 1.2s;
+	transition: transform 1.2s linear, cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s background-color;
+	transform: rotate(45deg) translate(0px, 0px);
+	-webkit-transform: rotate(45deg) translate(0px, 0px);
+	-o-transform: rotate(45deg) translate(0px, 0px);
+	-moz-transform: rotate(45deg) translate(0px, 0px);
+}
+
+.content > ul > li:nth-child(3n) > input ~ .workshop-slide-back {
+	animation-name: slideUp2;
+	animation-duration: 1.5s;
+	transition: transform 1.5s linear, cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s background-color;
+	transform: rotate(45deg) translate(0px, 0px);
+	-webkit-transform: rotate(45deg) translate(0px, 0px);
+	-o-transform: rotate(45deg) translate(0px, 0px);
+	-moz-transform: rotate(45deg) translate(0px, 0px);
+}
+
+.content > ul > li:nth-child(3n + 1) > input ~ .workshop-slide-back {
+	animation-name: slideUp3;
+	animation-duration: 1.8s;
+	transition: transform 1.8s linear, cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s background-color;
+	transform: rotate(45deg) translate(0px, 0px);
+	-webkit-transform: rotate(45deg) translate(0px, 0px);
+	-o-transform: rotate(45deg) translate(0px, 0px);
+	-moz-transform: rotate(45deg) translate(0px, 0px);
+}
+
+.content > ul > li:first-child > input:required ~ .workshop-s {
+	background-color: #EDCD98;
 }
 
 .content > ul > li:nth-child(3n + 2) > input:required ~ .workshop-left {
@@ -262,8 +338,10 @@ input:checked ~ label.workshop-left, input:checked ~ label.workshop-s {
 
 .workshop-deet {
 	display: none;
+	width: 100%;
+	height: max-content;
 	position: absolute;
-	margin-left: 20%;
+	/* margin-left: 20%; */
 	animation: fadeIn;
 	-webkit-animation-name: fadeIn;
 	animation-duration: 2s;
@@ -271,13 +349,13 @@ input:checked ~ label.workshop-left, input:checked ~ label.workshop-s {
 
 .workshop-description {
 	display: none;
-	position: fixed;
+	position: relative;
 	animation: fadeIn;
-	width: 30%;
+	float: right;
+	width: 55%;
 	-webkit-animation-name: fadeIn;
 	animation-duration: 1.5s;
 }
-
 
 @keyframes fadeIn {
 	0% {opacity: 0;}
@@ -353,7 +431,7 @@ input:checked ~ label.workshop-left, input:checked ~ label.workshop-s {
 	.content > ul > li:nth-child(7n+7) > a, 
 	.content > ul > li:nth-child(7n+5) > label,
 	.content > ul > li:nth-child(7n+6) > label,
-	.content > ul > li:nth-child(7n+7) > label, .workshop-s {
+	.content > ul > li:nth-child(7n+7) > label {
 		background-color: #EDCD98;
 	}
 }
