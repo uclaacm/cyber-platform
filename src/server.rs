@@ -96,7 +96,7 @@ fn get_almanac(mut client: Client, session: String) -> Result<impl Reply, Reject
 	Ok(page("Events", html! {
 		script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" {}
 		h1 { "Fall 2020 Events" }
-		section class="content" {
+		section class="events tiles" {
 			div class="workshop-deet" id="deet" {
 				@for event in &events {
 					@let title: String = event.get("title");
@@ -130,8 +130,9 @@ fn get_almanac(mut client: Client, session: String) -> Result<impl Reply, Reject
 					@let first_id: String = format!("{}-deet", first_slug);
 					li {
 						input class="workshop" id=(first_slug) name="ws" type="radio" value=(first_id) {}
-						label class="workshop-s workshop-0" for=(first_slug) { // id gives for, name gives group
+						label class="workshop-0" for=(first_slug) { // id gives for, name gives group
 							span {(first_short)}
+							img src= {"/static/events/" (first_slug) ".svg"} {}
 						}
 					}
 					@for event in rest_events.iter() {
@@ -139,10 +140,10 @@ fn get_almanac(mut client: Client, session: String) -> Result<impl Reply, Reject
 						@let slug: String = short.replace(" ", "-").to_lowercase();
 						@let id: String = format!("{}-deet", slug);
 						li {
-							input class="workshop" id=(slug) name="ws" type="radio" value=(id) {
-								label for=(slug) class="workshop-left" { 
-									span {(short)}
-								}
+							input class="workshop" id=(slug) name="ws" type="radio" value=(id) {}
+							label for=(slug) class="workshop-left" { 
+								span {(short)}
+								img src= {"/static/events/" (slug) ".svg"} {}
 							}
 						}
 					}
@@ -174,7 +175,7 @@ fn get_challenges(mut client: Client, session: String, invalid: String) -> Resul
 	Ok(with_header(page("Challenges", html! {
 		style { "dialog{display:none;}dialog:target{display:block;}" }
 		h1 { "Challenges" }
-		section class="content" {
+		section class="challenges tiles" {
 			ul {
 				@for challenge in &challenges {
 					@let slug: String = challenge.get("slug");

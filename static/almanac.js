@@ -30,7 +30,7 @@ function refresh() {
             if (document.referrer.split('/').splice(-1)[0] == 'events' && window.history.state) {
                 let tiles = document.querySelectorAll('.workshop-left');
                 tiles.forEach((x) => {
-                    x.classList.add('workshop-slide-back')
+                    x.classList.add('workshop-up')
                 })
             }
             clear();
@@ -56,12 +56,12 @@ $(document).ready(function () {
         if (e.oldURL.split('#').length > 1) {
             let tiles = document.querySelectorAll('.workshop-left');
             tiles.forEach((x) => {
-                x.classList.add('workshop-slide-back')
+                x.classList.add('workshop-up')
             })
         } else {
-            let tiles = document.querySelectorAll('.workshop-slide-back');
+            let tiles = document.querySelectorAll('.workshop-up');
             tiles.forEach((x) => {
-                x.classList.remove('workshop-slide-back')
+                x.classList.remove('workshop-up')
             })
         }
         refresh();

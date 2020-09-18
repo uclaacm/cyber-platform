@@ -79,11 +79,11 @@ nav ul li:last-of-type a {
 	border-radius: 2px;
 }
 
-.content {
+section {
 	position: relative;
 }
 
-.content > ul {
+.tiles > ul {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -91,12 +91,12 @@ nav ul li:last-of-type a {
 	list-style: none;
 }
 
-.content > ul > li {
+.tiles > ul > li {
 	position: relative;
 	height: 0;
 }
 
-.content > ul > li > a {
+.tiles > ul > li > a {
 	color: #242424;
 	background-color: #FFBA44;
 	position: absolute;
@@ -110,13 +110,13 @@ nav ul li:last-of-type a {
 	border-radius: 5%;
 }
 
-.content > ul > li > a[solved] {
+.challenges > ul > li > a[solved] {
 	color: #FFBA44;
 	background-color: #242424 !important;
 	border: 2px solid #FFBA44;
 }
 
-.content > ul > li > a > div {
+.challenges > ul > li > a > div {
 	text-align: center;
 	position: absolute;
 	transform: rotate(-45deg);
@@ -124,14 +124,14 @@ nav ul li:last-of-type a {
 	height: 100%;
 }
 
-.content > ul > li > a h1.value {
+.challenges > ul > li > a h1.value {
 	font-size: 1.75em;
 	color: inherit;
 	margin-top: 27.5%;
 	margin-bottom: 5%;
 }
 
-.content > ul > li > a p.tags {
+.challenges > ul > li > a p.tags {
 	font-size: 1em;
 	font-style: italic;
 	color: inherit;
@@ -139,26 +139,38 @@ nav ul li:last-of-type a {
 	line-height: 20%;
 }
 
-.content > ul > li > a p.tags span:not(:first-child) {
+.challenges > ul > li > a p.tags span:not(:first-child) {
 	display: none;
 }
 
-.content > ul > li > input[type=radio] {
+.events > ul > li > input[type=radio] {
 	position: absolute;
 	opacity: 0;
 }
 
-.content > ul > li input {
-	position: relative;
-	opacity: 0;
-}
-
-label.workshop-s, label.workshop-left {
+input.workshop ~ label {
+	color: #242424;
+	background-color: #FFBA44;
+	position: absolute;
+	z-index: 1;
+	transform: rotate(45deg);
+	width: calc(90% * (1/1.4142135623730950488016887242097));
+	height: calc(90% * (1/1.4142135623730950488016887242097));
+	top: calc((100% - 90% * (1/1.4142135623730950488016887242097)) / 2);
+	left: calc((100% - 90% * (1/1.4142135623730950488016887242097)) / 2);
+	border-radius: 5%;
 	cursor: pointer;
 	transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s background-color;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-label.workshop-s span, label.workshop-left span {
+input:required.workshop ~ label.workshop-0 {
+	background-color: #EDCD98;
+}
+
+input.workshop ~ label > span {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -172,30 +184,22 @@ label.workshop-s span, label.workshop-left span {
 	font-family: 'Poppins', sans-serif;
 }
 
-input:required ~ label.workshop-top { 
-	pointer-events: none;
-	opacity: 0;
-	visibility: hidden;
+input:checked.workshop ~ label {
+	color: #242424;
+	background-color: #FF8C4C !important;
 }
 
-input ~ label.workshop-s { 
-	opacity: 1;
-	visibility: visible;
+input.workshop ~ label img, input:checked.workshop ~ label span {
+	opacity: 0;
+	visibility: hidden;
+	transition: linear 0.5s opacity;
 }
 
-/* input:required ~ label.workshop-s:not(.workshop-0) { 
-	opacity: 0;
-	visibility: hidden;
-} */
-
-/* input ~ label.workshop-left { 
-	opacity: 0;
-	visibility: hidden;
-} */
-
-input:required ~ label.workshop-left { 
+input:checked.workshop ~ label img, input.workshop ~ label span {
 	opacity: 1;
 	visibility: visible;
+	transform: rotate(-45deg);
+	transition: linear 0.3s 0.1s opacity;
 }
 
 @keyframes slideLeft1 {
@@ -252,21 +256,7 @@ input:required ~ label.workshop-left {
 	}
 }
 
-.content label.workshop-s, label.workshop-left {
-	color: #242424;
-	background-color: #FFBA44;
-	position: absolute;
-	display: block;
-	z-index: 1;
-	transform: rotate(45deg);
-	width: calc(90% * (1/1.4142135623730950488016887242097));
-	height: calc(90% * (1/1.4142135623730950488016887242097));
-	top: calc((100% - 90% * (1/1.4142135623730950488016887242097)) / 2);
-	left: calc((100% - 90% * (1/1.4142135623730950488016887242097)) / 2);
-	border-radius: 5%;
-}
-
-.content > ul > li:nth-child(3n + 2) > input ~ .workshop-slide-back {
+.events > ul > li:nth-child(3n + 2) > input ~ .workshop-up {
 	animation-name: slideUp1;
 	animation-duration: 1.2s;
 	transition: transform 1.2s linear, cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s background-color;
@@ -276,7 +266,7 @@ input:required ~ label.workshop-left {
 	-moz-transform: rotate(45deg) translate(0px, 0px);
 }
 
-.content > ul > li:nth-child(3n) > input ~ .workshop-slide-back {
+.events > ul > li:nth-child(3n) > input ~ .workshop-up {
 	animation-name: slideUp2;
 	animation-duration: 1.5s;
 	transition: transform 1.5s linear, cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s background-color;
@@ -286,7 +276,7 @@ input:required ~ label.workshop-left {
 	-moz-transform: rotate(45deg) translate(0px, 0px);
 }
 
-.content > ul > li:nth-child(3n + 1) > input ~ .workshop-slide-back {
+.events > ul > li:nth-child(3n + 1) > input ~ .workshop-up {
 	animation-name: slideUp3;
 	animation-duration: 1.8s;
 	transition: transform 1.8s linear, cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s background-color;
@@ -296,11 +286,7 @@ input:required ~ label.workshop-left {
 	-moz-transform: rotate(45deg) translate(0px, 0px);
 }
 
-.content > ul > li:first-child > input:required ~ .workshop-s {
-	background-color: #EDCD98;
-}
-
-.content > ul > li:nth-child(3n + 2) > input:required ~ .workshop-left {
+.events > ul > li:nth-child(3n + 2) > input:required ~ .workshop-left {
 	animation-name: slideLeft1;
 	animation-duration: 1.2s;
 	transition: transform 1.2s linear, cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s background-color;
@@ -310,7 +296,7 @@ input:required ~ label.workshop-left {
 	-moz-transform: rotate(45deg) translate(0px, 135px);
 }
 
-.content > ul > li:nth-child(3n) > input:required ~ .workshop-left {
+.events > ul > li:nth-child(3n) > input:required ~ .workshop-left {
 	animation-name: slideLeft2;
 	animation-duration: 1.5s;
 	transition: transform 1.5s linear, cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s background-color;
@@ -320,8 +306,7 @@ input:required ~ label.workshop-left {
 	-moz-transform: rotate(45deg) translate(0px, 405px);
 }
 
-
-.content > ul > li:nth-child(3n + 1) > input:required ~ .workshop-left {
+.events > ul > li:nth-child(3n + 1) > input:required ~ .workshop-left {
 	animation-name: slideLeft3;
 	animation-duration: 1.8s;
 	transition: transform 1.8s linear, cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s background-color;
@@ -331,17 +316,11 @@ input:required ~ label.workshop-left {
 	-moz-transform: rotate(45deg) translate(0px, 675px);
 }
 
-input:checked ~ label.workshop-left, input:checked ~ label.workshop-s {
-	color: #242424;
-	background-color: #FF8C4C !important;
-}
-
 .workshop-deet {
 	display: none;
 	width: 100%;
 	height: max-content;
 	position: absolute;
-	/* margin-left: 20%; */
 	animation: fadeIn;
 	-webkit-animation-name: fadeIn;
 	animation-duration: 2s;
@@ -363,80 +342,80 @@ input:checked ~ label.workshop-left, input:checked ~ label.workshop-s {
  }
 
 @media (max-width: 599px) {
-	.content > ul > li {
+	.tiles > ul > li {
 		width: 50%;
 		padding-top: 50%;
 		margin-bottom: calc(-50% / 2);
 	}
 
-	.content > ul > li:nth-child(3n) {
+	.tiles > ul > li:nth-child(3n) {
 		margin-left: calc(50% / 2);
 	}
 
-	.content > ul > li:nth-child(3n) {
+	.tiles > ul > li:nth-child(3n) {
 		margin-right: calc(50% / 2);
 	}
 
-	.content > ul > li:nth-child(3n) > a {
+	.tiles > ul > li:nth-child(3n) > a {
 		background-color: #EDCD98;
 	}
 
-	.content > ul > li > a, .workshop-s {
+	.tiles > ul > li > a {
 		font-size: calc(6vw / 2);
 	}
 }
 
 @media (min-width: 600px) and (max-width: 767px) {
-	.content > ul > li {
+	.tiles > ul > li {
 		width: 33%;
 		padding-top: 33%;
 		margin-bottom: calc(-33% / 2);
 	}
 
-	.content > ul > li:nth-child(5n+4) {
+	.tiles > ul > li:nth-child(5n+4) {
 		margin-left: calc(33% / 2);
 	}
 
-	.content > ul > li:nth-child(5n) {
+	.tiles > ul > li:nth-child(5n) {
 		margin-right: calc(33% / 2);
 	}
 
-	.content > ul > li:nth-child(5n+4) > a,
-	.content > ul > li:nth-child(5n) > a {
+	.tiles > ul > li:nth-child(5n+4) > a,
+	.tiles > ul > li:nth-child(5n) > a {
 		background-color: #EDCD98;
 	}
 
-	.content > ul > li > a {
+	.tiles > ul > li > a {
 		font-size: calc(6vw / 3);
 	}
 }
 
 @media (min-width: 768px) {
-	.content > ul > li, .workshop {
+	.tiles > ul > li, .workshop {
 		width: 25%;
 		padding-top: 25%;
 		margin-bottom: calc(-25% / 2);
 	}
 
-	.content > ul > li:nth-child(7n+5), .workshop {
+	.tiles > ul > li:nth-child(7n+5), .workshop {
 		margin-left: calc(25% / 2);
 	}
 
-	.content > ul > li:nth-child(7n), .workshop {
+	.tiles > ul > li:nth-child(7n), .workshop {
 		margin-right: calc(25% / 2);
 	}
 
-	.content > ul > li:nth-child(7n+5) > a,
-	.content > ul > li:nth-child(7n+6) > a,
-	.content > ul > li:nth-child(7n+7) > a, 
-	.content > ul > li:nth-child(7n+5) > label,
-	.content > ul > li:nth-child(7n+6) > label,
-	.content > ul > li:nth-child(7n+7) > label {
+	.tiles > ul > li:nth-child(7n+5) > a,
+	.tiles > ul > li:nth-child(7n+6) > a,
+	.tiles > ul > li:nth-child(7n+7) > a, 
+	.tiles > ul > li:nth-child(7n+5) > label,
+	.tiles > ul > li:nth-child(7n+6) > label,
+	.tiles > ul > li:nth-child(7n+7) > label {
 		background-color: #EDCD98;
 	}
 }
 
-.content dialog {
+.challenges dialog {
 	position: fixed;
 	color: white;
 	background-color: #242424;
@@ -452,57 +431,57 @@ input:checked ~ label.workshop-left, input:checked ~ label.workshop-s {
 	transform: translate(0, -50%);
 }
 
-.content dialog h1 {
+.challenges dialog h1 {
 	margin-top: 0;
 	margin-bottom: .5rem;
 }
 
-.content dialog p.value,
-.content dialog p.solves {
+.challenges dialog p.value,
+.challenges dialog p.solves {
 	font-style: italic;
 	display: inline-block;
 	margin: 0;
 }
 
-.content dialog p.value {
+.challenges dialog p.value {
 	padding-right: .5rem;
 }
 
-.content dialog p.value::after {
+.challenges dialog p.value::after {
 	content: " points,";
 }
 
-.content dialog p.value[data="1"]::after {
+.challenges dialog p.value[data="1"]::after {
 	content: " point,";
 }
 
-.content dialog p.solves::after {
+.challenges dialog p.solves::after {
 	content: " solves";
 }
 
-.content dialog p.solves[data="1"]::after {
+.challenges dialog p.solves[data="1"]::after {
 	content: " solve";
 }
 
-.content dialog p.author {
+.challenges dialog p.author {
 	font-style: italic;
 	margin: 0;
 }
 
-.content dialog p.author::before {
+.challenges dialog p.author::before {
 	content: "Author: ";
 }
 
-.content dialog p.tags {
+.challenges dialog p.tags {
 	margin: 0;
 }
 
-.content dialog p.tags::before {
+.challenges dialog p.tags::before {
 	content: "Tags: ";
 	font-style: italic;
 }
 
-.content dialog p.tags span {
+.challenges dialog p.tags span {
 	font-size: .8rem;
 	color: #242424;
 	background-color: #FFBA44;
@@ -511,17 +490,17 @@ input:checked ~ label.workshop-left, input:checked ~ label.workshop-s {
 	border-radius: .8rem;
 }
 
-.content dialog form {
+.challenges dialog form {
 	margin-top: 1.5rem;
 	display: flex;
 }
 
-.content dialog form input[type=text]:focus,
-.content dialog form input[type=text]:active {
+.challenges dialog form input[type=text]:focus,
+.challenges dialog form input[type=text]:active {
 	outline: none;
 }
 
-.content dialog form input[type=text] {
+.challenges dialog form input[type=text] {
 	font-family: 'Chivo', sans-serif;
 	font-size: .8rem;
 	flex-grow: 1;
@@ -531,7 +510,7 @@ input:checked ~ label.workshop-left, input:checked ~ label.workshop-s {
 	border: none;
 }
 
-.content dialog form button {
+.challenges dialog form button {
 	font-family: 'Chivo', sans-serif;
 	font-size: .8rem;
 	color: #242424;
@@ -541,14 +520,14 @@ input:checked ~ label.workshop-left, input:checked ~ label.workshop-s {
 	border: none;
 }
 
-.content dialog a.close {
+.challenges dialog a.close {
 	visibility: hidden;
 	position: absolute;
 	top: 0;
 	right: 0;
 }
 
-.content dialog a.close::after {
+.challenges dialog a.close::after {
 	content: "×";
 	font-size: 2em;
 	visibility: visible;

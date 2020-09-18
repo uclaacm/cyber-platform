@@ -62,6 +62,9 @@ pub fn load(repo_path: &Path, static_path: &Path, pool: &ClientPool) -> Result<(
 		]
 	)?;
 
+	let static_events_path = static_path.join("events");
+	fs::create_dir_all(&static_events_path)?;
+
 	for event_path in fs::read_dir(repo_path.join("events"))?
 		.filter_map(|entry| entry.ok())
 		.map(|entry| entry.path())
@@ -78,6 +81,9 @@ pub fn load(repo_path: &Path, static_path: &Path, pool: &ClientPool) -> Result<(
 
 		let mut slides = String::new();
 		push_html(&mut slides, Parser::new(&event.slides));
+
+		let icon_file = format!("{}.svg", event.short.replace(" ", "-").to_lowercase());
+		fs::copy(event_path.join("icon.svg"), static_events_path.join(&icon_file))?;
 
 		client.execute("INSERT INTO scrap.event (id, title, short, date, description, link, slides) VALUES ($1, $2, $3, $4, $5, $6, $7)
 			ON CONFLICT (id) DO UPDATE SET title=$2, short=$3, date=$4, description=$5, link=$6, slides=$7",
