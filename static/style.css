@@ -149,9 +149,10 @@ section {
 }
 
 input.workshop ~ label {
-	color: #242424;
+	color: black;
 	background-color: #FFBA44;
 	position: absolute;
+	display: block;
 	z-index: 1;
 	transform: rotate(45deg);
 	width: calc(90% * (1/1.4142135623730950488016887242097));
@@ -164,6 +165,7 @@ input.workshop ~ label {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	margin: 0;
 }
 
 input:required.workshop ~ label.workshop-0 {
@@ -185,14 +187,16 @@ input.workshop ~ label > span {
 }
 
 input:checked.workshop ~ label {
-	color: #242424;
-	background-color: #FF8C4C !important;
+	color: #FFBA44;
+	background-color: transparent !important;
+	border: 2px solid #FFBA44;
 }
 
 input.workshop ~ label img, input:checked.workshop ~ label span {
 	opacity: 0;
 	visibility: hidden;
 	transition: linear 0.5s opacity;
+	width: 50%;
 }
 
 input:checked.workshop ~ label img, input.workshop ~ label span {
@@ -322,6 +326,7 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 	height: max-content;
 	position: absolute;
 	animation: fadeIn;
+	top: 0;
 	-webkit-animation-name: fadeIn;
 	animation-duration: 2s;
 }
@@ -339,7 +344,28 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 @keyframes fadeIn {
 	0% {opacity: 0;}
 	100% {opacity: 1;}
- }
+}
+
+@media (max-width: 767px) {
+	.events > ul > li:nth-child(3n + 2) > input ~ .workshop-up,
+	.events > ul > li:nth-child(3n) > input ~ .workshop-up,
+	.events > ul > li:nth-child(3n + 1) > input ~ .workshop-up,
+	.events > ul > li:nth-child(3n + 2) > input:required ~ .workshop-left,
+	.events > ul > li:nth-child(3n) > input:required ~ .workshop-left,
+	.events > ul > li:nth-child(3n + 1) > input:required ~ .workshop-left {
+		animation-name: none;
+		animation-duration: 0s;
+		transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s background-color;
+		transform: rotate(45deg);
+		-webkit-transform: rotate(45deg);
+		-o-transform: rotate(45deg);
+		-moz-transform: rotate(45deg);
+	}
+	
+	.workshop-description {
+		width: 100%;
+	}
+}
 
 @media (max-width: 599px) {
 	.tiles > ul > li {
@@ -356,12 +382,17 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 		margin-right: calc(50% / 2);
 	}
 
-	.tiles > ul > li:nth-child(3n) > a {
+	.tiles > ul > li:nth-child(3n) > a,
+	.tiles > ul > li:nth-child(3n) > label {
 		background-color: #EDCD98;
 	}
 
 	.tiles > ul > li > a {
 		font-size: calc(6vw / 2);
+	}
+
+	.workshop-deet {
+		top: 89%;
 	}
 }
 
@@ -381,12 +412,18 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 	}
 
 	.tiles > ul > li:nth-child(5n+4) > a,
-	.tiles > ul > li:nth-child(5n) > a {
+	.tiles > ul > li:nth-child(5n) > a,
+	.tiles > ul > li:nth-child(5n+4) > label,
+	.tiles > ul > li:nth-child(5n) > label {
 		background-color: #EDCD98;
 	}
 
 	.tiles > ul > li > a {
 		font-size: calc(6vw / 3);
+	}
+
+	.workshop-deet {
+		top: 100%;
 	}
 }
 
@@ -397,11 +434,11 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 		margin-bottom: calc(-25% / 2);
 	}
 
-	.tiles > ul > li:nth-child(7n+5), .workshop {
+	.tiles > ul > li:nth-child(7n+5) {
 		margin-left: calc(25% / 2);
 	}
 
-	.tiles > ul > li:nth-child(7n), .workshop {
+	.tiles > ul > li:nth-child(7n) {
 		margin-right: calc(25% / 2);
 	}
 

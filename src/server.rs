@@ -97,32 +97,7 @@ fn get_almanac(mut client: Client, session: String) -> Result<impl Reply, Reject
 		script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" {}
 		h1 { "Fall 2020 Events" }
 		section class="events tiles" {
-			div class="workshop-deet" id="deet" {
-				@for event in &events {
-					@let title: String = event.get("title");
-					@let short: String = event.get("short");
-					@let id: String = format!("{}-deet", short.replace(" ", "-").to_lowercase());
-					@let description: String = event.get("description");
-					@let date: String = event.get("date");
-					@let link: String = event.get("link");
-					@let slides: String = event.get("slides");
-					div class="workshop-description" id=(id) {
-						h1 { (title) }
-						h3 { (date) }
-						@if link == "" {
-							h3 { "Link: Coming Soon!"}
-						} @else {
-							h3 { "Link: " (PreEscaped(link)) }
-						}
-						@if slides == "" {
-							h3 { "Slides: Coming Soon!"}
-						} @else {
-							h3 { "Slides: " (PreEscaped(slides)) }
-						}
-						p { (PreEscaped(description)) }
-					}
-				}
-			}
+			
 			ul {
 				@if let Some((first_event, rest_events)) = &events.split_first() {
 					@let first_short: String = first_event.get("short");
@@ -146,6 +121,35 @@ fn get_almanac(mut client: Client, session: String) -> Result<impl Reply, Reject
 								img src= {"/static/events/" (slug) ".svg"} {}
 							}
 						}
+					}
+				}
+				@for _ in 0..3 {
+					li {}
+				}
+			}
+			div class="workshop-deet" id="deet" {
+				@for event in &events {
+					@let title: String = event.get("title");
+					@let short: String = event.get("short");
+					@let id: String = format!("{}-deet", short.replace(" ", "-").to_lowercase());
+					@let description: String = event.get("description");
+					@let date: String = event.get("date");
+					@let link: String = event.get("link");
+					@let slides: String = event.get("slides");
+					div class="workshop-description" id=(id) {
+						h1 { (title) }
+						h3 { (date) }
+						@if link == "" {
+							h3 { "Link: Coming Soon!"}
+						} @else {
+							h3 { "Link: " (PreEscaped(link)) }
+						}
+						@if slides == "" {
+							h3 { "Slides: Coming Soon!"}
+						} @else {
+							h3 { "Slides: " (PreEscaped(slides)) }
+						}
+						p { (PreEscaped(description)) }
 					}
 				}
 			}
