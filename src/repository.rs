@@ -20,6 +20,17 @@ struct Ctf {
 }
 
 #[derive(Deserialize)]
+struct EventInfo {
+	id: i32,
+	title: String,
+	short: String, 
+	date: String,
+	description: String,
+	link: String,
+	slides: String,
+}
+
+#[derive(Deserialize)]
 struct Challenge {
 	slug: String,
 	title: String,
@@ -51,11 +62,48 @@ pub fn load(repo_path: &Path, static_path: &Path, pool: &ClientPool) -> Result<(
 		]
 	)?;
 
+	let static_events_path = static_path.join("events");
+	fs::create_dir_all(&static_events_path)?;
+
+	for event_path in fs::read_dir(repo_path.join("events"))?
+		.filter_map(|entry| entry.ok())
+		.map(|entry| entry.path())
+		.filter(|path| path.join("event.toml").is_file()) {
+		
+		let config = fs::read_to_string(event_path.join("event.toml"))?;
+		let event: EventInfo = toml::from_str(&config)?;
+
+		let mut description = String::new();
+		push_html(&mut description, Parser::new(&event.description));
+
+		let mut link = String::new();
+		push_html(&mut link, Parser::new(&event.link));
+
+		let mut slides = String::new();
+		push_html(&mut slides, Parser::new(&event.slides));
+
+		let icon_file = format!("{}.svg", event.short.replace(" ", "-").to_lowercase());
+		fs::copy(event_path.join("icon.svg"), static_events_path.join(&icon_file))?;
+
+		client.execute("INSERT INTO scrap.event (id, title, short, date, description, link, slides) VALUES ($1, $2, $3, $4, $5, $6, $7)
+			ON CONFLICT (id) DO UPDATE SET title=$2, short=$3, date=$4, description=$5, link=$6, slides=$7",
+			&[
+				&event.id,
+				&event.title,
+				&event.short,
+				&event.date,
+				&description,
+				&link,
+				&slides,
+			]
+		)?;
+	}
+	
 	let mut hashes = HashSet::new();
 	let static_files_path = static_path.join("files");
 	fs::create_dir_all(&static_files_path)?;
 	client.simple_query("UPDATE scrap.challenge SET enabled=NULL")?;
-	for challenge_path in fs::read_dir(repo_path)?
+	for challenge_path in fs::read_dir(repo_path.join("challenges"))?
 		.filter_map(|entry| entry.ok())
 		.map(|entry| entry.path())
 		.filter(|path| path.join("challenge.toml").is_file()) {
