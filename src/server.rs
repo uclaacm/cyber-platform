@@ -53,6 +53,7 @@ fn make_body(page: &str, content: Markup, mut client: Client, session: String) -
 						span { b { "ACM" } " Cyber" }
 					}
 					ul {
+						li { a href="/events" { "Events" } }
 						li { a href="/challenges" { "Challenges" } }
 						li { a href="/scoreboard" { "Scoreboard" } }
 						@if count > 0 {
@@ -71,7 +72,7 @@ fn make_body(page: &str, content: Markup, mut client: Client, session: String) -
 }
 
 fn make_reply(body: String) -> impl Reply {
-	reply::with_header(reply::html(body), "content-security-policy", "script-src 'none'")
+	reply::with_header(reply::html(body), "content-security-policy", "script-src 'self' https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")
 }
 
 fn page(title: &str, content: Markup, client: Client, session: String) -> Result<impl Reply, Rejection> {
@@ -82,6 +83,78 @@ fn get_home(mut client: Client, session: String) -> Result<impl Reply, Rejection
 	let home: String = result!(client.query("SELECT home FROM scrap.ctf", &[]))[0].get("home");
 	Ok(page("", html! {
 		(PreEscaped(home))
+	}, client, session)?)
+}
+
+fn get_almanac(mut client: Client, session: String) -> Result<impl Reply, Rejection> {
+	let events = result!(client.query("SELECT
+		id, title, short, date, description, link, slides, 
+		CASE WHEN id % 2 = 0 THEN 1 ELSE 0 END AS is_even
+		FROM scrap.event
+		ORDER BY id ASC",
+		&[]));
+	Ok(page("Events", html! {
+		script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" {}
+		h1 { "Fall 2020 Events" }
+		section class="events tiles" {
+			
+			ul {
+				@if let Some((first_event, rest_events)) = &events.split_first() {
+					@let first_short: String = first_event.get("short");
+					@let first_slug: String = first_short.replace(" ", "-").to_lowercase();
+					@let first_id: String = format!("{}-deet", first_slug);
+					li {
+						input class="workshop" id=(first_slug) name="ws" type="radio" value=(first_id) {}
+						label class="workshop-0" for=(first_slug) { // id gives for, name gives group
+							span {(first_short)}
+							img src= {"/static/events/" (first_slug) ".svg"} {}
+						}
+					}
+					@for event in rest_events.iter() {
+						@let short: String = event.get("short");
+						@let slug: String = short.replace(" ", "-").to_lowercase();
+						@let id: String = format!("{}-deet", slug);
+						li {
+							input class="workshop" id=(slug) name="ws" type="radio" value=(id) {}
+							label for=(slug) class="workshop-left" { 
+								span {(short)}
+								img src= {"/static/events/" (slug) ".svg"} {}
+							}
+						}
+					}
+				}
+				@for _ in 0..3 {
+					li {}
+				}
+			}
+			div class="workshop-deet" id="deet" {
+				@for event in &events {
+					@let title: String = event.get("title");
+					@let short: String = event.get("short");
+					@let id: String = format!("{}-deet", short.replace(" ", "-").to_lowercase());
+					@let description: String = event.get("description");
+					@let date: String = event.get("date");
+					@let link: String = event.get("link");
+					@let slides: String = event.get("slides");
+					div class="workshop-description" id=(id) {
+						h1 { (title) }
+						h3 { (date) }
+						@if link == "" {
+							h3 { "Link: Coming Soon!"}
+						} @else {
+							h3 { "Link: " (PreEscaped(link)) }
+						}
+						@if slides == "" {
+							h3 { "Slides: Coming Soon!"}
+						} @else {
+							h3 { "Slides: " (PreEscaped(slides)) }
+						}
+						p { (PreEscaped(description)) }
+					}
+				}
+			}
+		}
+		script src="/static/almanac.js" {}
 	}, client, session)?)
 }
 
@@ -105,7 +178,7 @@ fn get_challenges(mut client: Client, session: String, invalid: String) -> Resul
 		&[&session]));
 	Ok(with_header(page("Challenges", html! {
 		h1 { "Challenges" }
-		section class="challenges" {
+		section class="challenges tiles" {
 			ul {
 				@for challenge in &challenges {
 					@let slug: String = challenge.get("slug");
@@ -496,6 +569,7 @@ pub fn run(port: u16, pool: ClientPool) {
 		.or(get.clone().and(path("profile")).and(end()).and_then(get_profile))
 		.or(get.clone().and(path("register")).and(end()).and_then(get_register))
 		.or(get.clone().and(path("login")).and(end()).and_then(get_login))
+		.or(get.clone().and(path("events")).and(end()).and_then(get_almanac))
 		.or(post.clone().and(path("challenges")).and(end())
 			.and(body::content_length_limit(4096))
 			.and(body::form()).and_then(submit))

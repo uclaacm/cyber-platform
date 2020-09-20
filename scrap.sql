@@ -36,6 +36,16 @@ CREATE TABLE IF NOT EXISTS scrap.ctf (
 	stop TIMESTAMP WITH TIME ZONE
 );
 
+CREATE TABLE IF NOT EXISTS scrap.event (
+	id INTEGER NOT NULL UNIQUE,
+	title TEXT NOT NULL,
+	short TEXT NOT NULL,
+	date TEXT NOT NULL,
+	description TEXT NOT NULL,
+	link TEXT,
+	slides TEXT
+);
+
 CREATE INDEX IF NOT EXISTS team_name_hash_index ON scrap.team (name, hash);
 CREATE INDEX IF NOT EXISTS team_score_submit_index ON scrap.team (score DESC, submit ASC) INCLUDE (name, solves);
 CREATE INDEX IF NOT EXISTS session_cookie_index ON scrap.session (cookie);
