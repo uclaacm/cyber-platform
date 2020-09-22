@@ -361,6 +361,10 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 		-o-transform: rotate(45deg);
 		-moz-transform: rotate(45deg);
 	}
+
+	input:required.workshop ~ label.workshop-0 {
+		background-color: #FFBA44;
+	}
 	
 	.workshop-description {
 		width: 100%;
@@ -394,6 +398,10 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 	.workshop-deet {
 		top: 89%;
 	}
+
+	input:required.workshop ~ label.workshop-0 {
+		background-color: #FFBA44;
+	}
 }
 
 @media (min-width: 600px) and (max-width: 767px) {
@@ -424,6 +432,10 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 
 	.workshop-deet {
 		top: 100%;
+	}
+
+	input:required.workshop ~ label.workshop-0 {
+		background-color: #FFBA44;
 	}
 }
 
