@@ -89,9 +89,10 @@ fn get_home(mut client: Client, session: String) -> Result<impl Reply, Rejection
 fn get_almanac(mut client: Client, session: String) -> Result<impl Reply, Rejection> {
 	let events = result!(client.query("SELECT
 		id, title, short, date, description, link, slides, 
+		CASE WHEN id = 1 THEN 1 ELSE 0 END AS is_first,
 		CASE WHEN id % 2 = 0 THEN 1 ELSE 0 END AS is_even
 		FROM scrap.event
-		ORDER BY id ASC",
+		ORDER BY is_first DESC, is_even DESC, id ASC",
 		&[]));
 	Ok(page("Events", html! {
 		script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" {}
