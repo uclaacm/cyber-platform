@@ -341,7 +341,7 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 	animation-duration: 1.5s;
 }
 
-.workshop-description h3 a {
+.workshop-description h3 p {
 	margin: 0;
 }
 
