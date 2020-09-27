@@ -141,9 +141,9 @@ fn get_almanac(mut client: Client, session: String) -> Result<impl Reply, Reject
 						h1 { (title) }
 						h3 { (date) }
 						@if link == "" {
-							h3 { "Facebook Event: Coming Soon!"}
+							h3 { "Facebook Event Page: Coming Soon!"}
 						} @else {
-							h3 { a href={ (link) } {"Facebook Event"} }
+							h3 { a href={ (link) } {"Facebook Event Page"} }
 						}
 						@if slides == "" {
 							h3 { "Slides: Coming Soon!"}
