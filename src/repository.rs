@@ -76,12 +76,6 @@ pub fn load(repo_path: &Path, static_path: &Path, pool: &ClientPool) -> Result<(
 		let mut description = String::new();
 		push_html(&mut description, Parser::new(&event.description));
 
-		let mut link = String::new();
-		push_html(&mut link, Parser::new(&event.link));
-
-		let mut slides = String::new();
-		push_html(&mut slides, Parser::new(&event.slides));
-
 		let icon_file = format!("{}.svg", event.short.replace(" ", "-").to_lowercase());
 		fs::copy(event_path.join("icon.svg"), static_events_path.join(&icon_file))?;
 
@@ -93,8 +87,8 @@ pub fn load(repo_path: &Path, static_path: &Path, pool: &ClientPool) -> Result<(
 				&event.short,
 				&event.date,
 				&description,
-				&link,
-				&slides,
+				&event.link,
+				&event.slides,
 			]
 		)?;
 	}

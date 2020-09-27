@@ -341,10 +341,6 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 	animation-duration: 1.5s;
 }
 
-.workshop-description h3 p {
-	margin: 0;
-}
-
 @keyframes fadeIn {
 	0% {opacity: 0;}
 	100% {opacity: 1;}
