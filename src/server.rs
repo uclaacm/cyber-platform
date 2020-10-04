@@ -44,7 +44,7 @@ fn make_body(page: &str, content: Markup, mut client: Client, session: String) -
 				meta name="viewport" content="width=device-width, initial-scale=1";
 				title { @if page.len() > 0 { (page) " | " } (title) }
 				link rel="stylesheet" href="/static/style.css";
-				link rel="icon" type="image/png" href="/static/favicon.png";
+				link rel="icon" type="image/png" href="/static/logo.svg";
 			}
 			body {
 				nav {
