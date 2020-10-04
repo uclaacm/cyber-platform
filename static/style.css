@@ -11,7 +11,7 @@ body {
 
 h1, h2, h3 {
 	font-family: 'Poppins', sans-serif;
-	color: #FFCB44;
+	color: #ffba44;
 }
 
 h3 {
@@ -20,7 +20,7 @@ h3 {
 }
 
 a {
-	color: #FFCB44;
+	color: #ffba44;
 	text-decoration: none;
 }
 
@@ -44,7 +44,7 @@ nav {
 a.banner {
 	font-family: 'Poppins', sans-serif;
 	font-size: 1.5rem;
-	color: #FFCB44;
+	color: #ffba44;
 	display: flex;
 	align-items: center;
 	padding-right: 1rem;
@@ -74,7 +74,7 @@ nav ul li a {
 nav ul li:last-of-type a {
 	font-weight: 700;
 	color: #242424;
-	background-color: #FFCB44;
+	background-color: #ffba44;
 	padding: .25rem .5rem;
 	border-radius: 2px;
 }
@@ -98,7 +98,7 @@ section {
 
 .tiles > ul > li > a {
 	color: #242424;
-	background-color: #FFCB44;
+	background-color: #ffba44;
 	position: absolute;
 	display: block;
 	z-index: 1;
@@ -111,9 +111,9 @@ section {
 }
 
 .challenges > ul > li > a[solved] {
-	color: #FFCB44;
+	color: #ffba44;
 	background-color: #242424 !important;
-	border: 2px solid #FFCB44;
+	border: 2px solid #ffba44;
 }
 
 .challenges > ul > li > a > div {
@@ -150,7 +150,7 @@ section {
 
 input.workshop ~ label {
 	color: black;
-	background-color: #FFCB44;
+	background-color: #ffba44;
 	position: absolute;
 	display: block;
 	z-index: 1;
@@ -187,9 +187,9 @@ input.workshop ~ label > span {
 }
 
 input:checked.workshop ~ label {
-	color: #FFCB44;
+	color: #ffba44;
 	background-color: transparent !important;
-	border: 2px solid #FFCB44;
+	border: 2px solid #ffba44;
 }
 
 input.workshop ~ label img, input:checked.workshop ~ label span {
@@ -363,11 +363,23 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 	}
 
 	input:required.workshop ~ label.workshop-0 {
-		background-color: #FFCB44;
+		background-color: #ffba44;
 	}
 	
 	.workshop-description {
 		width: 100%;
+	}
+}
+
+@media (max-width: 465px) {
+	nav {
+		position: relative;
+	}
+
+	nav ul li:last-child {
+		position: relative;
+		top: -3rem;
+		right: 5rem;
 	}
 }
 
@@ -400,7 +412,7 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 	}
 
 	input:required.workshop ~ label.workshop-0 {
-		background-color: #FFCB44;
+		background-color: #ffba44;
 	}
 }
 
@@ -435,7 +447,7 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 	}
 
 	input:required.workshop ~ label.workshop-0 {
-		background-color: #FFCB44;
+		background-color: #ffba44;
 	}
 }
 
@@ -496,7 +508,7 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 	color: white;
 	background-color: #242424;
 	opacity: 95%;
-	border: 2px solid #FFCB44;
+	border: 2px solid #ffba44;
 	position: fixed;
 	z-index: 2;
 	width: 80vw;
@@ -560,7 +572,7 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 .challenges dialog p.tags span {
 	font-size: .8rem;
 	color: #242424;
-	background-color: #FFCB44;
+	background-color: #ffba44;
 	margin: 0 .25rem;
 	padding: .1rem .5rem;
 	border-radius: .8rem;
@@ -590,7 +602,7 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 	font-family: 'Open Sans', sans-serif;
 	font-size: .8rem;
 	color: #242424;
-	background-color: #FFCB44;
+	background-color: #ffba44;
 	border-top-right-radius: 2px;
 	border-bottom-right-radius: 2px;
 	border: none;
@@ -627,16 +639,16 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 }
 
 .scoreboard .score {
-	border-right: 2px solid #FFCB44;
+	border-right: 2px solid #ffba44;
 }
 
 .scoreboard .challenge {
-	border-right: 1px dashed #FFCB44;
+	border-right: 1px dashed #ffba44;
 }
 
 .scoreboard th,
 .scoreboard td {
-	border-bottom: 1px dashed #FFCB44;
+	border-bottom: 1px dashed #ffba44;
 }
 
 .scoreboard th:not(.challenge) {
@@ -674,8 +686,8 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 }
 
 .scoreboard td.challenge[solved] {
-	background-color: #FFCB44;
-	border: 1px solid #FFCB44;
+	background-color: #ffba44;
+	border: 1px solid #ffba44;
 }
 
 .profile form input,
@@ -703,11 +715,11 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 .profile form input:focus,
 .login form input:focus,
 .register form input:focus {
-	outline-color: #FFCB44;
+	outline-color: #ffba44;
 }
 
 .profile form button,
 .login form button,
 .register form button {
-	background-color: #FFCB44;
+	background-color: #ffba44;
 }
