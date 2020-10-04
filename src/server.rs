@@ -49,8 +49,8 @@ fn make_body(page: &str, content: Markup, mut client: Client, session: String) -
 			body {
 				nav {
 					a.banner href="/" {
-						img src="/static/logo.svg";
-						span { b { "ACM" } " Cyber" }
+						img src="/static/wordmark.svg";
+						// span { img src="/static/wordmark.svg"; }
 					}
 					ul {
 						li { a href="/events" { "Events" } }
