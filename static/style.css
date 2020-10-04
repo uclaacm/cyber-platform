@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Chivo:wght@400;700&family=Poppins:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Poppins:wght@400;700&display=swap');
 
 body {
-	font-family: 'Chivo', sans-serif;
+	font-family: 'Open Sans', sans-serif;
 	color: white;
 	background-color: #242424;
 	margin: 0 auto;
@@ -11,7 +11,7 @@ body {
 
 h1, h2, h3 {
 	font-family: 'Poppins', sans-serif;
-	color: #FFBA44;
+	color: #FFCB44;
 }
 
 h3 {
@@ -20,7 +20,7 @@ h3 {
 }
 
 a {
-	color: #FFBA44;
+	color: #FFCB44;
 	text-decoration: none;
 }
 
@@ -31,6 +31,7 @@ a:hover {
 
 p {
 	line-height: 1.5rem;
+	font-size: 0.9rem;
 }
 
 nav {
@@ -43,15 +44,14 @@ nav {
 a.banner {
 	font-family: 'Poppins', sans-serif;
 	font-size: 1.5rem;
-	color: #FFBA44;
+	color: #FFCB44;
 	display: flex;
 	align-items: center;
 	padding-right: 1rem;
 }
 
 a.banner img {
-	width: 2rem;
-	height: 2rem;
+	height: 2.5rem;
 	padding-right: .5rem;
 }
 
@@ -68,13 +68,13 @@ nav ul li + li {
 }
 
 nav ul li a {
-	color: #EDCD98;
+	color: #ffe5a1;
 }
 
 nav ul li:last-of-type a {
 	font-weight: 700;
 	color: #242424;
-	background-color: #FFBA44;
+	background-color: #FFCB44;
 	padding: .25rem .5rem;
 	border-radius: 2px;
 }
@@ -98,7 +98,7 @@ section {
 
 .tiles > ul > li > a {
 	color: #242424;
-	background-color: #FFBA44;
+	background-color: #FFCB44;
 	position: absolute;
 	display: block;
 	z-index: 1;
@@ -111,9 +111,9 @@ section {
 }
 
 .challenges > ul > li > a[solved] {
-	color: #FFBA44;
+	color: #FFCB44;
 	background-color: #242424 !important;
-	border: 2px solid #FFBA44;
+	border: 2px solid #FFCB44;
 }
 
 .challenges > ul > li > a > div {
@@ -150,7 +150,7 @@ section {
 
 input.workshop ~ label {
 	color: black;
-	background-color: #FFBA44;
+	background-color: #FFCB44;
 	position: absolute;
 	display: block;
 	z-index: 1;
@@ -169,7 +169,7 @@ input.workshop ~ label {
 }
 
 input:required.workshop ~ label.workshop-0 {
-	background-color: #EDCD98;
+	background-color: #ffe5a1;
 }
 
 input.workshop ~ label > span {
@@ -187,9 +187,9 @@ input.workshop ~ label > span {
 }
 
 input:checked.workshop ~ label {
-	color: #FFBA44;
+	color: #FFCB44;
 	background-color: transparent !important;
-	border: 2px solid #FFBA44;
+	border: 2px solid #FFCB44;
 }
 
 input.workshop ~ label img, input:checked.workshop ~ label span {
@@ -363,7 +363,7 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 	}
 
 	input:required.workshop ~ label.workshop-0 {
-		background-color: #FFBA44;
+		background-color: #FFCB44;
 	}
 	
 	.workshop-description {
@@ -388,7 +388,7 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 
 	.tiles > ul > li:nth-child(3n) > a,
 	.tiles > ul > li:nth-child(3n) > label {
-		background-color: #EDCD98;
+		background-color: #ffe5a1;
 	}
 
 	.tiles > ul > li > a {
@@ -400,7 +400,7 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 	}
 
 	input:required.workshop ~ label.workshop-0 {
-		background-color: #FFBA44;
+		background-color: #FFCB44;
 	}
 }
 
@@ -423,7 +423,7 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 	.tiles > ul > li:nth-child(5n) > a,
 	.tiles > ul > li:nth-child(5n+4) > label,
 	.tiles > ul > li:nth-child(5n) > label {
-		background-color: #EDCD98;
+		background-color: #ffe5a1;
 	}
 
 	.tiles > ul > li > a {
@@ -435,7 +435,7 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 	}
 
 	input:required.workshop ~ label.workshop-0 {
-		background-color: #FFBA44;
+		background-color: #FFCB44;
 	}
 }
 
@@ -460,7 +460,7 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 	.tiles > ul > li:nth-child(7n+5) > label,
 	.tiles > ul > li:nth-child(7n+6) > label,
 	.tiles > ul > li:nth-child(7n+7) > label {
-		background-color: #EDCD98;
+		background-color: #ffe5a1;
 	}
 }
 
@@ -496,7 +496,7 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 	color: white;
 	background-color: #242424;
 	opacity: 95%;
-	border: 2px solid #FFBA44;
+	border: 2px solid #FFCB44;
 	position: fixed;
 	z-index: 2;
 	width: 80vw;
@@ -560,7 +560,7 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 .challenges dialog p.tags span {
 	font-size: .8rem;
 	color: #242424;
-	background-color: #FFBA44;
+	background-color: #FFCB44;
 	margin: 0 .25rem;
 	padding: .1rem .5rem;
 	border-radius: .8rem;
@@ -577,7 +577,7 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 }
 
 .challenges dialog form input[type=text] {
-	font-family: 'Chivo', sans-serif;
+	font-family: 'Open Sans', sans-serif;
 	font-size: .8rem;
 	flex-grow: 1;
 	padding: .5rem;
@@ -587,10 +587,10 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 }
 
 .challenges dialog form button {
-	font-family: 'Chivo', sans-serif;
+	font-family: 'Open Sans', sans-serif;
 	font-size: .8rem;
 	color: #242424;
-	background-color: #FFBA44;
+	background-color: #FFCB44;
 	border-top-right-radius: 2px;
 	border-bottom-right-radius: 2px;
 	border: none;
@@ -627,16 +627,16 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 }
 
 .scoreboard .score {
-	border-right: 2px solid #FFBA44;
+	border-right: 2px solid #FFCB44;
 }
 
 .scoreboard .challenge {
-	border-right: 1px dashed #FFBA44;
+	border-right: 1px dashed #FFCB44;
 }
 
 .scoreboard th,
 .scoreboard td {
-	border-bottom: 1px dashed #FFBA44;
+	border-bottom: 1px dashed #FFCB44;
 }
 
 .scoreboard th:not(.challenge) {
@@ -674,8 +674,8 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 }
 
 .scoreboard td.challenge[solved] {
-	background-color: #FFBA44;
-	border: 1px solid #FFBA44;
+	background-color: #FFCB44;
+	border: 1px solid #FFCB44;
 }
 
 .profile form input,
@@ -684,7 +684,7 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 .login form button,
 .register form input,
 .register form button {
-	font-family: 'Chivo', sans-serif;
+	font-family: 'Open Sans', sans-serif;
 	font-size: 1rem;
 	display: block;
 	margin-top: .5rem;
@@ -703,11 +703,11 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 .profile form input:focus,
 .login form input:focus,
 .register form input:focus {
-	outline-color: #FFBA44;
+	outline-color: #FFCB44;
 }
 
 .profile form button,
 .login form button,
 .register form button {
-	background-color: #FFBA44;
+	background-color: #FFCB44;
 }
