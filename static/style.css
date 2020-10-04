@@ -107,7 +107,7 @@ section {
 	height: calc(90% * (1/1.4142135623730950488016887242097));
 	top: calc((100% - 90% * (1/1.4142135623730950488016887242097)) / 2);
 	left: calc((100% - 90% * (1/1.4142135623730950488016887242097)) / 2);
-	border-radius: 5%;
+	border-radius: 15%;
 }
 
 .challenges > ul > li > a[solved] {
@@ -159,7 +159,7 @@ input.workshop ~ label {
 	height: calc(90% * (1/1.4142135623730950488016887242097));
 	top: calc((100% - 90% * (1/1.4142135623730950488016887242097)) / 2);
 	left: calc((100% - 90% * (1/1.4142135623730950488016887242097)) / 2);
-	border-radius: 5%;
+	border-radius: 15%;
 	cursor: pointer;
 	transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s background-color;
 	display: flex;
