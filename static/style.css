@@ -14,6 +14,11 @@ h1, h2, h3 {
 	color: #ffba44;
 }
 
+h2 {
+	margin: 0.3rem 0;
+	font-size: 1.2rem;
+}
+
 h3 {
 	margin: 0.2rem 0;
 	font-size: 1rem;
@@ -339,6 +344,12 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 	width: 55%;
 	-webkit-animation-name: fadeIn;
 	animation-duration: 1.5s;
+	padding-bottom: 5rem;
+}
+
+.workshop-description ol {
+	font-size: 0.9rem;
+	line-height: 1.5rem;
 }
 
 @keyframes fadeIn {
