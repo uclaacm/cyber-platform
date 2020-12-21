@@ -56,6 +56,7 @@ fn make_body(page: &str, content: Markup, mut client: Client, session: String) -
 						li { a href="/events" { "Events" } }
 						li { a href="/challenges" { "Challenges" } }
 						li { a href="/scoreboard" { "Scoreboard" } }
+						li { a href="/rewards" { "Rewards" } }
 						@if count > 0 {
 							li { a href="/profile" { "Profile" } }
 							li { a href="/logout" { "Logout" } }
@@ -156,6 +157,59 @@ fn get_almanac(mut client: Client, session: String) -> Result<impl Reply, Reject
 			}
 		}
 		script src="/static/almanac.js" {}
+	}, client, session)?)
+}
+
+fn get_rewards(mut client: Client, session: String) -> Result<impl Reply, Rejection> {
+	Ok(page("Rewards", html! {
+		script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" {}
+		h1 { "Rewards" }
+		section {
+			section class="prizes tiles" {
+				ul {
+					li { a id="regular" style="background-color:#ffe5a1;" { span{"Regular"} } }
+					li { a id="premium" { span{"Premium"} } }
+				}
+			}
+			div style="display:none;" class="gacha" {
+				div class="gacha-top" {}
+				div class="gacha-window" {
+					div style="min-height:80px;" {}
+					section class="tiles" {
+						ul {
+							@for _ in 0..7 {
+								li { a {} }
+							}
+						}
+						
+					}
+				}
+				div class="gacha-control" {
+					div class="gacha-knob" { div class="gacha-knob-turn" {} }
+					div class="gacha-out" {}
+				}
+			}
+		}
+		section {
+			div style="display:none" id="notification" {
+				h1 { "Congrats! You won "}
+				p { "The Cyber Discord Bot will give you your prize" }
+			}
+			div class="tickets" {
+				h2 { "You have" }
+				h3 { "3 Regular Ticket(s)" }
+				h3 { "1 Premium Ticket(s)" }
+			}
+			a { button class="help" { "How does this work?"}}
+		}
+		section class="prizes tiles" style="display:none;" { 
+			ul {
+				@for _ in 0..7 {
+					li { a { span{ "Prize A" }  } }
+				}
+			}
+		}
+		script src="/static/gacha.js" {}
 	}, client, session)?)
 }
 
@@ -571,6 +625,7 @@ pub fn run(port: u16, pool: ClientPool) {
 		.or(get.clone().and(path("register")).and(end()).and_then(get_register))
 		.or(get.clone().and(path("login")).and(end()).and_then(get_login))
 		.or(get.clone().and(path("events")).and(end()).and_then(get_almanac))
+		.or(get.clone().and(path("rewards")).and(end()).and_then(get_rewards))
 		.or(post.clone().and(path("challenges")).and(end())
 			.and(body::content_length_limit(4096))
 			.and(body::form()).and_then(submit))
