@@ -8,6 +8,7 @@ use warp::http::{Response, StatusCode};
 use warp::reject::custom;
 use warp::reply::with_header;
 use warp::path::{end, path};
+use regex::Regex;
 
 use crate::database::{Client, ClientPool};
 
@@ -300,16 +301,11 @@ fn make_profile(team: Option<Row>, error: Option<&str>) -> Markup {
 			@match team {
 				Some(team) => {
 					@let name: String = team.get("name");
-					@let email: String = team.get("email");
 					@let discord: String = team.get("discord");
 					form method="POST" {
 						label {
 							"Team Name: "
 							input type="text" disabled="disabled" value=(name);
-						}
-						label {
-							"Email: "
-							input type="email" name="email" value=(email);
 						}
 						label {
 							"Discord: "
@@ -335,7 +331,7 @@ fn make_profile(team: Option<Row>, error: Option<&str>) -> Markup {
 }
 
 fn get_profile(mut client: Client, session: String) -> Result<impl Reply, Rejection> {
-	let team = match client.query("SELECT name, email, discord FROM scrap.team
+	let team = match client.query("SELECT name, discord FROM scrap.team
 		WHERE id=lookup($1)",
 		&[&session]) {
 		Ok(mut teams) => teams.pop(),
@@ -351,7 +347,6 @@ fn make_register(error: Option<&str>) -> Markup {
 			@if let Some(error) = error { p class="error" { (error) } }
 			form method="POST" {
 				input type="text" name="name" placeholder="Team Name" maxlength="64" pattern="[ -~]+";
-				input type="email" name="email" placeholder="Email";
 				input type="text" name="discord" placeholder="Discord handle (eg. cyber#1234)";
 				input type="password" name="password" placeholder="Password";
 				button type="submit" { "Register" }
@@ -443,7 +438,7 @@ fn submit(mut client: Client, session: String, form: HashMap<String, String>) ->
 }
 
 fn edit(mut client: Client, session: String, form: HashMap<String, String>) -> Result<impl Reply, Rejection> {
-	let team = match client.query("SELECT name, email, discord FROM scrap.team
+	let team = match client.query("SELECT name, discord FROM scrap.team
 		WHERE id=lookup($1)",
 		&[&session]) {
 		Ok(mut teams) => teams.pop(),
@@ -460,15 +455,21 @@ fn edit(mut client: Client, session: String, form: HashMap<String, String>) -> R
 			}
 		}
 	}
-	let email = profile_form!(form.get("email"), "Email is required.", false);
 	let discord = profile_form!(form.get("discord"), "Discord handle is required.", false);
 	let password = profile_form!(form.get("password"), "", true);
 	let current_password = profile_form!(form.get("current_password"), "Current password is required.", false);
+	let re = Regex::new(r"^.{2,32}?#\d{4}$").unwrap();
+	if !re.is_match(discord) {
+		return Ok(Response::builder()
+			.status(StatusCode::BAD_REQUEST)
+			.header("content-security-policy", "script-src 'none'")
+			.body(make_body("Profile", make_profile(team, Some("Invalid Discord handle.")), client, session)?))
+	}
 	match client.execute("UPDATE scrap.team
-		SET email=$2, discord=$3, hash=CASE WHEN ($4 != '') THEN crypt($4, gen_salt('bf')) ELSE hash END
+		SET discord=$2, hash=CASE WHEN ($3 != '') THEN crypt($3, gen_salt('bf')) ELSE hash END
 		WHERE id=lookup($1)
-		AND hash=crypt($5, hash)",
-		&[&session, &email, &discord, &password, &current_password]) {
+		AND hash=crypt($4, hash)",
+		&[&session, &discord, &password, &current_password]) {
 		Ok(n) if n > 0 => (),
 		Ok(_) => return Ok(Response::builder()
 			.status(StatusCode::UNAUTHORIZED)
@@ -477,7 +478,7 @@ fn edit(mut client: Client, session: String, form: HashMap<String, String>) -> R
 		Err(ref e) if e.code() == Some(&SqlState::UNIQUE_VIOLATION) => return Ok(Response::builder()
 			.status(StatusCode::BAD_REQUEST)
 			.header("content-security-policy", "script-src 'none'")
-			.body(make_body("Profile", make_profile(team, Some("Email or Discord handle conflict.")), client, session)?)),
+			.body(make_body("Profile", make_profile(team, Some("Discord handle conflict.")), client, session)?)),
 		Err(e) => return Err(custom(e)),
 	}
 	Ok(Response::builder()
@@ -493,7 +494,6 @@ fn register(mut client: Client, session: String, form: HashMap<String, String>) 
 		}
 	}
 	let name = register_form!(form.get("name"), "Team name is required.");
-	let email = register_form!(form.get("email"), "Email is required.");
 	let discord = register_form!(form.get("discord"), "Discord handle is required.");
 	let password = register_form!(form.get("password"), "Password is required.");
 	if name.len() > 64 || !name.chars().all(|c| c.is_ascii_graphic() || c == ' ') {
@@ -502,14 +502,21 @@ fn register(mut client: Client, session: String, form: HashMap<String, String>) 
 			.header("content-security-policy", "script-src 'none'")
 			.body(make_body("Registration", make_register(Some("Invalid team name length or characters.")), client, session)?))
 	}
+	let re = Regex::new(r"^.{2,32}?#\d{4}$").unwrap();
+	if !re.is_match(discord) {
+		return Ok(Response::builder()
+			.status(StatusCode::BAD_REQUEST)
+			.header("content-security-policy", "script-src 'none'")
+			.body(make_body("Registration", make_register(Some("Invalid Discord handle.")), client, session)?))
+	}
 	match client.execute("INSERT INTO scrap.team
-		(name, email, discord, hash) VALUES ($1, $2, $3, crypt($4, gen_salt('bf')))",
-		&[name, email, discord, password]) {
+		(name, discord, hash) VALUES ($1, $2, crypt($3, gen_salt('bf')))",
+		&[name, discord, password]) {
 		Ok(_) => (),
 		Err(ref e) if e.code() == Some(&SqlState::UNIQUE_VIOLATION) => return Ok(Response::builder()
 			.status(StatusCode::BAD_REQUEST)
 			.header("content-security-policy", "script-src 'none'")
-			.body(make_body("Registration", make_register(Some("Team name, email, or Discord handle conflict.")), client, session)?)),
+			.body(make_body("Registration", make_register(Some("Team name or Discord handle conflict.")), client, session)?)),
 		Err(e) => return Err(custom(e)),
 	}
 	Ok(Response::builder()
