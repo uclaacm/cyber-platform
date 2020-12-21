@@ -20,6 +20,8 @@ CREATE TABLE IF NOT EXISTS scrap.team (
 	hash TEXT NOT NULL,
 	solves BIGINT DEFAULT 0,
 	score INTEGER DEFAULT 0,
+	redeemed_score INTEGER DEFAULT 0,
+	premium_tickets INTEGER DEFAULT 0,
 	submit TIMESTAMP DEFAULT NOW()
 );
 
