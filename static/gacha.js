@@ -214,4 +214,38 @@ var confetti = {
 			}
 		}
 	}
+<<<<<<< HEAD
 })();
+=======
+})();
+
+function hoverRedeem() {
+    $(this).find("span").text("Click to Redeem")
+}
+
+function leaveRedeem(ogtext) {
+  function x() {
+    $(this).find("span").text(ogtext)
+  }
+}
+
+function showGachapon() {
+	$(".prizes").css("display", "none");
+	$(".gacha").css("display", "flex");
+  }
+  
+  function hideGachapon() {
+	$(".prizes").css("display", "block");
+	$(".gacha").css("display", "none");
+  }
+  
+  $(document).ready(function () {
+	$("#regular").hover(hoverRedeem, function(){$(this).find("span").text("Regular")});
+	$("#premium").hover(hoverRedeem, function(){$(this).find("span").text("Premium")});
+	$("#regular").click(showGachapon);
+	$("#premium").click(confetti.toggle);
+	$("#confettitoggle").click(confetti.stop);
+	$("#hidegachapon").click(hideGachapon);
+	
+  });  
+>>>>>>> 261a3e56aec0e0c3a26de3f9edc76f828700c72a
