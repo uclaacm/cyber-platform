@@ -101,18 +101,37 @@ section {
 	height: 0;
 }
 
-.tiles > ul > li > a {
+.tiles > ul > li > a, .tiles > ul > li .gacha-tiles {
 	color: #242424;
 	background-color: #ffba44;
 	position: absolute;
 	display: block;
 	z-index: 1;
+	transition: none;
 	transform: rotate(45deg);
 	width: calc(90% * (1/1.4142135623730950488016887242097));
 	height: calc(90% * (1/1.4142135623730950488016887242097));
 	top: calc((100% - 90% * (1/1.4142135623730950488016887242097)) / 2);
 	left: calc((100% - 90% * (1/1.4142135623730950488016887242097)) / 2);
 	border-radius: 15%;
+	border: none;
+}
+
+.tiles > ul > li .gacha-tiles:hover {
+	cursor: pointer;
+}
+
+.tiles > ul > li .gacha-tiles > span {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	transform: rotate(-45deg);
+	width: 100%;
+	height: 100%;
+	font-size: 1.1rem;
+	font-weight: bold;
+	font-family: 'Poppins', sans-serif;
 }
 
 .tiles > ul > li > a > span {
@@ -428,7 +447,7 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 		background-color: #ffe5a1;
 	}
 
-	.tiles > ul > li > a {
+	.tiles > ul > li > a, .tiles > ul > li .gacha-tiles {
 		font-size: calc(6vw / 2);
 	}
 
@@ -463,7 +482,7 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 		background-color: #ffe5a1;
 	}
 
-	.tiles > ul > li > a {
+	.tiles > ul > li > a, .tiles > ul > li .gacha-tiles {
 		font-size: calc(6vw / 3);
 	}
 
@@ -769,94 +788,95 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 	border: none;
 	padding: .25rem .5rem;
 	border-radius: 2px;
+	cursor: pointer;
 }
 
 .gacha {
-    min-height: 200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+	min-height: 200px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .gacha > div {
-    animation: fadeIn ease 3s;
+	animation: fadeIn ease 3s;
 }
 
 @keyframes fadeIn {
-    0% { opacity:0; }
-    100% { opacity:1; }
+	0% { opacity:0; }
+	100% { opacity:1; }
 }
 
 .gacha-top {
-    height: 30px;
-    width: 200px;
-    border-radius: 8px;
-    background-color: #ffba44;
+	height: 30px;
+	width: 200px;
+	border-radius: 8px;
+	background-color: #ffba44;
 }
 
 .gacha-window {
-    min-height: 300px;
-    width: 300px;
-    border-radius: 20%;
-    background-color: #fff2cc;
+	min-height: 300px;
+	width: 300px;
+	border-radius: 20%;
+	background-color: #fff2cc;
 }
 
 .gacha-control {
-    min-height: 150px;
-    padding: 8px 5px;
-    width:220px;
-    border-radius: 18px;
-    background-color:  #ffba44;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
+	min-height: 150px;
+	padding: 8px 5px;
+	width:220px;
+	border-radius: 18px;
+	background-color:  #ffba44;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
 }
 
 .gacha-knob {
-    height: 75px;
-    width: 75px;
-    border-radius: 100%;
-    background-color: #fff2cc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+	height: 75px;
+	width: 75px;
+	border-radius: 100%;
+	background-color: #fff2cc;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 @keyframes crank {
-    from { transform: rotate(20deg); }
-    to { transform: rotate(320deg); }
+	from { transform: rotate(20deg); }
+	to { transform: rotate(320deg); }
 }
 .gacha-knob-turn {
-    height: 15px;
-    width: 60px;
-    border-radius: 5%;
-    background-color: #ffba44;
-    border: #ffbdff;
-    animation: crank;
-    animation-duration: 2s;
+	height: 15px;
+	width: 60px;
+	border-radius: 5%;
+	background-color: #ffba44;
+	border: #ffbdff;
+	animation: crank;
+	animation-duration: 2s;
 }
 
 
 .gacha-out {
-    height: 70px;
-    width: 70px;
-    background-color: brown;
-    border-radius: 15%;
-    transform: rotate(45deg);
+	height: 70px;
+	width: 70px;
+	background-color: brown;
+	border-radius: 15%;
+	transform: rotate(45deg);
 }
 
 .container {
-    width: 100%;
-    height: 100%;
+	width: 100%;
+	height: 100%;
 }
 .confetti {
-    width: 15px;
-    height: 15px;
-    background-color: #f2d74e;
-    position: absolute;
-    left: 50%;
-    animation: confetti 5s ease-in-out -2s infinite;
-    transform-origin: left top;
+	width: 15px;
+	height: 15px;
+	background-color: #f2d74e;
+	position: absolute;
+	left: 50%;
+	animation: confetti 5s ease-in-out -2s infinite;
+	transform-origin: left top;
 }
 .confetti:nth-child(1) {
 background-color: #f2d74e; left: 10%; animation-delay: 0;

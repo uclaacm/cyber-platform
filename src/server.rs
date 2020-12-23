@@ -176,14 +176,46 @@ fn get_rewards(mut client: Client, session: String) -> Result<impl Reply, Reject
 				@let regular_tickets: i32 = (score - redeemed_score) / 50;
 				script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" {}
 				h1 { "Rewards" }
-				section {
-					section class="prizes tiles" {
-						ul {
-							li { a id="regular" style="background-color:#ffe5a1;" { span{"Regular"} } }
-							li { a id="premium" { span{"Premium"} } }
+				section class="prizes tiles" {
+					ul {
+						li {  
+							form method="POST" action="./redeem" {
+								input type="hidden" name="type" value="regular" {}
+								button type="submit" class="gacha-tiles" style="background-color:#ffe5a1;" { span{"Regular"} }
+							}
+						}
+						li { 
+							form method="POST" action="./redeem" {
+								input type="hidden" name="type" value="premium" {}
+								button type="submit" class="gacha-tiles" { span{"Premium"} }
+							} 
 						}
 					}
-					div style="display:none;" class="gacha" {
+				}
+				section {
+					div class="tickets" {
+						h2 { "You have" }
+						h3 { (regular_tickets) " Regular Ticket(s)"  }
+						h3 { (premium_tickets) " Premium Ticket(s)" }
+					}
+					a { button class="help" { "How does this work?"}}
+				}
+			},
+			None => {
+				p class="not-logged-in" { "Log in to view rewards." }
+			}
+		}
+	}, client, session)?)
+}
+
+fn make_redeem_regular(prize: Option<&str>, error: Option<&str>) -> Markup {
+	html! {
+		h1 { "Rewards" }
+		section class="rewards" {
+			@if let Some(error) = error { p class="error" { (error) } }
+			@match prize {
+				Some(prize) => {
+					div class="gacha" {
 						div class="gacha-top" {}
 						div class="gacha-window" {
 							div style="min-height:80px;" {}
@@ -201,33 +233,124 @@ fn get_rewards(mut client: Client, session: String) -> Result<impl Reply, Reject
 							div class="gacha-out" {}
 						}
 					}
-				}
-				section {
-					div style="display:none" id="notification" {
-						h1 { "Congrats! You won "}
-						p { "The Cyber Discord Bot will give you your prize" }
-					}
-					div class="tickets" {
-						h2 { "You have" }
-						h3 { (regular_tickets) " Regular Ticket(s)"  }
-						h3 { (premium_tickets) " Premium Ticket(s)" }
-					}
-					a { button class="help" { "How does this work?"}}
-				}
-				section class="prizes tiles" style="display:none;" { 
-					ul {
-						@for _ in 0..7 {
-							li { a { span{ "Prize A" }  } }
+					section class="tiles" { 
+						h1 { "Congrats! You won... "}
+						ul {
+							@for _ in 0..7 {
+								li { a { span{ "Prize A" }  } }
+							}
 						}
 					}
+					div id="notification" {
+						p { "The Cyber Discord Bot will give you your prize" }
+					}
+					script src="/static/gacha.js" {}
+				},
+				None => {
+					p { "Not enough tickets." }
 				}
-				script src="/static/gacha.js" {}
-			},
-			None => {
-				p class="not-logged-in" { "Log in to view rewards." }
+			}
+			a href="./rewards" {"Back"}
+		}
+	}
+}
+
+fn make_redeem_premium(prize: Option<&str>, error: Option<&str>) -> Markup {
+	html! {
+		h1 { "Rewards" }
+		section class="rewards" {
+			@if let Some(error) = error { p class="error" { (error) } }
+			@match prize {
+				Some(prize) => {
+					p { (prize) }
+				},
+				None => {
+					p { "Not enough tickets." }
+				}
+			}
+			a href="./rewards" {"Back"}
+		}
+	}
+}
+
+fn redeem(mut client: Client, session: String, form: HashMap<String, String>) -> Result<impl Reply, Rejection> {
+	let empty = String::new();
+	let reward_type = form.get("type").unwrap_or(&empty);
+	let team = match client.query("SELECT redeemed_score, premium_tickets, score FROM scrap.team
+		WHERE id=lookup($1)",
+		&[&session]) {
+		Ok(mut teams) => teams.pop(),
+		Err(e) => return Err(custom(e)),
+	};
+	match team {
+		Some(team) => {
+			let redeemed_score: i32 = team.get("redeemed_score");
+			let premium_tickets: i32 = team.get("premium_tickets");
+			let score: i32 = team.get("score");
+			let regular_tickets = (score - redeemed_score) / 50;
+			match reward_type.as_str() {
+				"regular" => {
+					if regular_tickets > 0 {
+						let rows = result!(client.execute("UPDATE scrap.team team
+							SET redeemed_score=redeemed_score+50
+							WHERE team.id=lookup($1)",
+							&[&session])) as i32;
+						if rows > 0 {
+							// do some gatcha calculation stuff
+							return Ok(Response::builder()
+								.status(StatusCode::SEE_OTHER)
+								.body(make_body("Rewards", make_redeem_regular(Some("SHEEP"), None), client, session)?));
+						} else {
+							return Ok(Response::builder()
+								.status(StatusCode::SEE_OTHER)
+								.header("location", "/rewards")
+								.body("".to_string()));
+						}
+					} else {
+						return Ok(Response::builder()
+							.status(StatusCode::SEE_OTHER)
+							.body(make_body("Rewards", make_redeem_regular(None, None), client, session)?));
+					}
+				},
+				"premium" => {
+					if premium_tickets > 0 {
+						let rows = result!(client.execute("UPDATE scrap.team team
+							SET premium_tickets=premium_tickets-1
+							WHERE team.id=lookup($1)",
+							&[&session])) as i32;
+						if rows > 0 {
+							// do some gatcha calculation stuff
+							return Ok(Response::builder()
+								.status(StatusCode::SEE_OTHER)
+								.body(make_body("Rewards", make_redeem_premium(Some("You've entered a ticket into the raffle!"), None), client, session)?));
+						} else {
+							return Ok(Response::builder()
+								.status(StatusCode::SEE_OTHER)
+								.header("location", "/rewards")
+								.body("".to_string()));
+						}
+					} else {
+						return Ok(Response::builder()
+							.status(StatusCode::SEE_OTHER)
+							.body(make_body("Rewards", make_redeem_premium(None, None), client, session)?));
+					}
+				},
+				_ => return Ok(Response::builder()
+							.status(StatusCode::BAD_REQUEST)
+							.header("content-security-policy", "script-src 'none'")
+							.header("location", "/rewards")
+							.body("".to_string())),
 			}
 		}
-	}, client, session)?)
+		None => {
+			return Ok(Response::builder()
+				.status(StatusCode::BAD_REQUEST)
+				.header("content-security-policy", "script-src 'none'")
+				.header("location", "/rewards")
+				.body("".to_string()));
+		}
+	}
+	
 }
 
 fn get_challenges(mut client: Client, session: String, invalid: String) -> Result<impl Reply, Rejection> {
@@ -655,6 +778,9 @@ pub fn run(port: u16, pool: ClientPool) {
 		.or(post.clone().and(path("login")).and(end())
 			.and(body::content_length_limit(4096))
 			.and(body::form()).and_then(login))
+		.or(post.clone().and(path("redeem")).and(end())
+			.and(body::content_length_limit(4096))
+			.and(body::form()).and_then(redeem))
 		.or(get.clone().and(path("logout")).and(end()).and_then(logout))
 		.recover(error);
 	warp::serve(routes).run(([127, 0, 0, 1], port));
