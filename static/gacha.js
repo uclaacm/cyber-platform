@@ -214,9 +214,6 @@ var confetti = {
 			}
 		}
 	}
-<<<<<<< HEAD
-})();
-=======
 })();
 
 function hoverRedeem() {
@@ -248,4 +245,3 @@ function showGachapon() {
 	$("#hidegachapon").click(hideGachapon);
 	
   });  
->>>>>>> 261a3e56aec0e0c3a26de3f9edc76f828700c72a
