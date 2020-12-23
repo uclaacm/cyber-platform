@@ -227,13 +227,21 @@ function leaveRedeem(ogtext) {
 }
 
 function showGachapon() {
-  $(".prizes").css("display", "none");
-  $(".gacha").css("display", "flex");
-}
-
-$(document).ready(function () {
-  $("#regular").hover(hoverRedeem, function(){$(this).find("span").text("Regular")});
-  $("#premium").hover(hoverRedeem, function(){$(this).find("span").text("Premium")})
-  $("#regular").click(showGachapon)
-  $("#premium").click(confetti.toggle)
-});
+	$(".prizes").css("display", "none");
+	$(".gacha").css("display", "flex");
+  }
+  
+  function hideGachapon() {
+	$(".prizes").css("display", "block");
+	$(".gacha").css("display", "none");
+  }
+  
+  $(document).ready(function () {
+	$("#regular").hover(hoverRedeem, function(){$(this).find("span").text("Regular")});
+	$("#premium").hover(hoverRedeem, function(){$(this).find("span").text("Premium")});
+	$("#regular").click(showGachapon);
+	$("#premium").click(confetti.toggle);
+	$("#confettitoggle").click(confetti.stop);
+	$("#hidegachapon").click(hideGachapon);
+	
+  });  
