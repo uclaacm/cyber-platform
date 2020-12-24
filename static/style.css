@@ -915,9 +915,9 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
   }
   
   input:checked + .slider:before {
-    -webkit-transform: translateX(1.3rem);
-    -ms-transform: translateX(1.3rem);
-    transform: translateX(1.3rem);
+    -webkit-transform: translateX(1rem);
+    -ms-transform: translateX(1rem);
+    transform: translateX(1rem);
   }
   
   /* Rounded sliders */
