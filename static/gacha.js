@@ -107,7 +107,7 @@ var confetti = {
 		if (canvas === null) {
 			canvas = document.createElement("canvas");
 			canvas.setAttribute("id", "confetti-canvas");
-			canvas.setAttribute("style", "display:block;z-index:999999;pointer-events:none;position:fixed;top:0");
+			canvas.setAttribute("style", "display:block;z-index:999999;pointer-events:none;position:fixed;top:0;left:0;");
 			document.body.prepend(canvas);
 			canvas.width = width;
 			canvas.height = height;
@@ -235,13 +235,10 @@ function showGachapon() {
 	$(".prizes").css("display", "block");
 	$(".gacha").css("display", "none");
   }
-  
+
   $(document).ready(function () {
-	$("#regular").hover(hoverRedeem, function(){$(this).find("span").text("Regular")});
-	$("#premium").hover(hoverRedeem, function(){$(this).find("span").text("Premium")});
-	$("#regular").click(showGachapon);
-	$("#premium").click(confetti.toggle);
-	$("#confettitoggle").click(confetti.stop);
+	confetti.toggle();
+	$("#confettitoggle").click(confetti.toggle);
 	$("#hidegachapon").click(hideGachapon);
 	
   });  
