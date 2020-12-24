@@ -211,6 +211,7 @@ fn get_rewards(mut client: Client, session: String) -> Result<impl Reply, Reject
 
 fn make_redeem_regular(prize: Option<&str>, error: Option<&str>) -> Markup {
 	html! {
+		script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" {}
 		h1 { "Rewards" }
 		section class="rewards" {
 			@if let Some(error) = error { p class="error" { (error) } }
@@ -226,7 +227,6 @@ fn make_redeem_regular(prize: Option<&str>, error: Option<&str>) -> Markup {
 										li { a {} }
 									}
 								}
-								
 							}
 						}
 						div class="gacha-control" {
@@ -234,16 +234,11 @@ fn make_redeem_regular(prize: Option<&str>, error: Option<&str>) -> Markup {
 							div class="gacha-out" {}
 						}
 					}
-					section class="tiles" { 
-						h1 { "Congrats! You won... " (prize)}
-						ul {
-							@for _ in 0..7 {
-								li { a { span{ "Prize A" }  } }
-							}
-						}
-					}
-					div id="notification" {
-						p { "The Cyber Discord Bot will give you your prize" }
+					h2 { "Congrats! You won... " (prize) }
+					p { "The Cyber Discord Bot will give you your prize" }
+					div style="display:flex;align-items:baseline;justify-content:center" {
+						label class="switch" { input type="checkbox" id="confettitoggle" checked? { span class="slider round" {} } }
+						p { "Toggle Confetti" } 
 					}
 					script src="/static/gacha.js" {}
 				},
@@ -251,19 +246,25 @@ fn make_redeem_regular(prize: Option<&str>, error: Option<&str>) -> Markup {
 					p { "Not enough tickets." }
 				}
 			}
-			a href="./rewards" {"Back"}
+			a href="./rewards" { button class="help" {"Back to Rewards"} }
 		}
 	}
 }
 
 fn make_redeem_premium(prize: Option<&str>, error: Option<&str>) -> Markup {
 	html! {
+		script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" {}
 		h1 { "Rewards" }
 		section class="rewards" {
 			@if let Some(error) = error { p class="error" { (error) } }
 			@match prize {
 				Some(prize) => {
 					p { (prize) }
+					div style="display:flex;align-items:baseline;justify-content:center" {
+						label class="switch" { input type="checkbox" id="confettitoggle" checked? { span class="slider round" {} } }
+						p { "Toggle Confetti" } 
+					}
+					script src="/static/gacha.js" {}
 				},
 				None => {
 					p { "Not enough tickets." }
