@@ -8,7 +8,7 @@ use warp::http::{Response, StatusCode};
 use warp::reject::custom;
 use warp::reply::with_header;
 use warp::path::{end, path};
-use rand::Rng;
+use rand::distributions::{WeightedIndex, Distribution};
 
 use crate::database::{Client, ClientPool};
 
@@ -278,11 +278,44 @@ fn make_redeem_premium(prize: Option<&str>, error: Option<&str>) -> Markup {
 fn redeem(mut client: Client, session: String, form: HashMap<String, String>) -> Result<impl Reply, Rejection> {
 	let empty = String::new();
 	let reward_type = form.get("type").unwrap_or(&empty);
-	let team = match client.query("SELECT id, redeemed_score, premium_tickets, score FROM scrap.team
+	let team = match client.query("SELECT 
+			team.id, 
+			team.redeemed_score, 
+			team.premium_tickets, 
+			team.score,
+			CAST(COALESCE(a.counts,0) AS INTEGER) as \"aarin\",
+			CAST(COALESCE(b.counts,0) AS INTEGER) as \"discord_emote\",
+			CAST(COALESCE(c.counts,0) AS INTEGER) as \"discord_role\",
+			CAST(COALESCE(d.counts,0) AS INTEGER) as \"cyber_stickers\"
+		FROM scrap.team as team
+		LEFT JOIN (
+			SELECT
+				team, prize, counts
+			FROM scrap.prize
+			WHERE prize=\'Aarin Serenade\'
+		) a ON team.id = a.team
+		LEFT JOIN (
+			SELECT
+				team, prize, counts
+			FROM scrap.prize
+			WHERE prize=\'Cyber Discord Emote\'
+		) b ON team.id = b.team
+		LEFT JOIN (
+			SELECT
+				team, prize, counts
+			FROM scrap.prize
+			WHERE prize=\'Cyber Discord Role\'
+		) c ON team.id = c.team
+		LEFT JOIN (
+			SELECT
+				team, prize, counts
+			FROM scrap.prize
+			WHERE prize=\'Cyber Stickers\'
+		) d ON team.id = d.team
 		WHERE id=lookup($1)",
 		&[&session]) {
 		Ok(mut teams) => teams.pop(),
-		Err(e) => return Err(custom(e)),
+		Err(e) => return Err(custom(e))
 	};
 	match team {
 		Some(team) => {
@@ -294,8 +327,33 @@ fn redeem(mut client: Client, session: String, form: HashMap<String, String>) ->
 			match reward_type.as_str() {
 				"regular" => {
 					if regular_tickets > 0 {
-						let mut rng = rand::thread_rng();
-						let idx = rng.gen_range(0..6);
+						let stickers_count: i32 = team.get("cyber_stickers");
+						let discord_role_count: i32 = team.get("discord_role");
+						let discord_emote_count: i32 = team.get("discord_emote");
+						let aarin_count: i32 = team.get("aarin");
+						let mut stickers = 2.0;
+						let mut discord_role = 30.0;
+						let mut discord_emote = 0.5;
+						let mut aarin = 0.5;
+						if stickers_count > 0 {
+							stickers = 0.0;
+						}
+						if discord_role_count > 0 {
+							discord_role = 0.0;
+						}
+						if discord_emote_count > 0 {
+							discord_emote = 0.0;
+						}
+						if aarin_count > 0 {
+							aarin = 0.0;
+						}
+						let leftover_prob = 100.0 - (stickers + discord_role + discord_emote + aarin);
+						let zoom_background = 0.6 * leftover_prob;
+						let profile_pic = 0.4 * leftover_prob;
+
+						let weights = [zoom_background, profile_pic, stickers, discord_role, discord_emote, aarin];
+						let dist = WeightedIndex::new(&weights).unwrap();
+						let idx = dist.sample(&mut rand::thread_rng());
 						let prizes: Vec<&str> = vec![
 							"Zoom Background",
 							"Profile Picture",
@@ -312,8 +370,10 @@ fn redeem(mut client: Client, session: String, form: HashMap<String, String>) ->
 							Err(e) => return Err(custom(e))
 						}
 						match client.execute("INSERT INTO scrap.prize
-							(team, prize) VALUES ($1, $2)",
-							&[&id, &prizes[idx].to_string()]) {
+							(id, team, prize) VALUES ($3, $1, $2)
+							ON CONFLICT (id) DO UPDATE
+							SET counts=EXCLUDED.counts+1",
+							&[&id, &prizes[idx].to_string(), &format!("{}{}", &id, &prizes[idx])]) {
 							Ok(_) => (),
 							Err(e) => return Err(custom(e))
 						}
