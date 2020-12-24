@@ -8,6 +8,7 @@ use warp::http::{Response, StatusCode};
 use warp::reject::custom;
 use warp::reply::with_header;
 use warp::path::{end, path};
+use rand::Rng;
 
 use crate::database::{Client, ClientPool};
 
@@ -234,7 +235,7 @@ fn make_redeem_regular(prize: Option<&str>, error: Option<&str>) -> Markup {
 						}
 					}
 					section class="tiles" { 
-						h1 { "Congrats! You won... "}
+						h1 { "Congrats! You won... " (prize)}
 						ul {
 							@for _ in 0..7 {
 								li { a { span{ "Prize A" }  } }
@@ -276,7 +277,7 @@ fn make_redeem_premium(prize: Option<&str>, error: Option<&str>) -> Markup {
 fn redeem(mut client: Client, session: String, form: HashMap<String, String>) -> Result<impl Reply, Rejection> {
 	let empty = String::new();
 	let reward_type = form.get("type").unwrap_or(&empty);
-	let team = match client.query("SELECT redeemed_score, premium_tickets, score FROM scrap.team
+	let team = match client.query("SELECT id, redeemed_score, premium_tickets, score FROM scrap.team
 		WHERE id=lookup($1)",
 		&[&session]) {
 		Ok(mut teams) => teams.pop(),
@@ -288,24 +289,36 @@ fn redeem(mut client: Client, session: String, form: HashMap<String, String>) ->
 			let premium_tickets: i32 = team.get("premium_tickets");
 			let score: i32 = team.get("score");
 			let regular_tickets = (score - redeemed_score) / 50;
+			let id: i32 = team.get("id");
 			match reward_type.as_str() {
 				"regular" => {
 					if regular_tickets > 0 {
-						let rows = result!(client.execute("UPDATE scrap.team team
+						let mut rng = rand::thread_rng();
+						let idx = rng.gen_range(0..6);
+						let prizes: Vec<&str> = vec![
+							"Zoom Background",
+							"Profile Picture",
+							"Cyber Stickers",
+							"Cyber Discord Role",
+							"Cyber Discord Emote",
+							"Aarin Serenade"
+						];
+						match client.execute("UPDATE scrap.team team
 							SET redeemed_score=redeemed_score+50
-							WHERE team.id=lookup($1)",
-							&[&session])) as i32;
-						if rows > 0 {
-							// do some gatcha calculation stuff
-							return Ok(Response::builder()
-								.status(StatusCode::SEE_OTHER)
-								.body(make_body("Rewards", make_redeem_regular(Some("SHEEP"), None), client, session)?));
-						} else {
-							return Ok(Response::builder()
-								.status(StatusCode::SEE_OTHER)
-								.header("location", "/rewards")
-								.body("".to_string()));
+							WHERE team.id=$1",
+							&[&id]) {
+							Ok(_) => (),
+							Err(e) => return Err(custom(e))
 						}
+						match client.execute("INSERT INTO scrap.prize
+							(team, prize) VALUES ($1, $2)",
+							&[&id, &prizes[idx].to_string()]) {
+							Ok(_) => (),
+							Err(e) => return Err(custom(e))
+						}
+						return Ok(Response::builder()
+							.status(StatusCode::SEE_OTHER)
+							.body(make_body("Rewards", make_redeem_regular(Some(prizes[idx]), None), client, session)?));
 					} else {
 						return Ok(Response::builder()
 							.status(StatusCode::SEE_OTHER)
@@ -314,21 +327,22 @@ fn redeem(mut client: Client, session: String, form: HashMap<String, String>) ->
 				},
 				"premium" => {
 					if premium_tickets > 0 {
-						let rows = result!(client.execute("UPDATE scrap.team team
+						match client.execute("UPDATE scrap.team team
 							SET premium_tickets=premium_tickets-1
-							WHERE team.id=lookup($1)",
-							&[&session])) as i32;
-						if rows > 0 {
-							// do some gatcha calculation stuff
-							return Ok(Response::builder()
-								.status(StatusCode::SEE_OTHER)
-								.body(make_body("Rewards", make_redeem_premium(Some("You've entered a ticket into the raffle!"), None), client, session)?));
-						} else {
-							return Ok(Response::builder()
-								.status(StatusCode::SEE_OTHER)
-								.header("location", "/rewards")
-								.body("".to_string()));
+							WHERE team.id=$1",
+							&[&id]) {
+							Ok(_) => (),
+							Err(e) => return Err(custom(e))
 						}
+						match client.execute("INSERT INTO scrap.raffle
+							(team) VALUES ($1)",
+							&[&id]) {
+							Ok(_) => (),
+							Err(e) => return Err(custom(e))
+						}
+						return Ok(Response::builder()
+							.status(StatusCode::SEE_OTHER)
+							.body(make_body("Rewards", make_redeem_premium(Some("You've entered a ticket into the raffle!"), None), client, session)?));
 					} else {
 						return Ok(Response::builder()
 							.status(StatusCode::SEE_OTHER)
@@ -350,7 +364,6 @@ fn redeem(mut client: Client, session: String, form: HashMap<String, String>) ->
 				.body("".to_string()));
 		}
 	}
-	
 }
 
 fn get_challenges(mut client: Client, session: String, invalid: String) -> Result<impl Reply, Rejection> {
