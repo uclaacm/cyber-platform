@@ -644,6 +644,33 @@ fn get_login(client: Client, session: String) -> Result<impl Reply, Rejection> {
 	Ok(page("Login", make_login(None), client, session)?)
 }
 
+fn make_admin(error: Option<&str>) -> Markup {
+	html! {
+		h1 { "Admin" }
+		section {//class="login" {
+			@if let Some(error) = error { p class="error" { (error) } }
+			form method="POST" {
+				input type="text" name="name" placeholder="Team Name";
+				input type="text" name="tickets" placeholder="0";
+				button type="submit" { "gib" }
+			}
+		}
+	}
+}
+
+fn get_admin(mut client: Client, session: String) -> Result<impl Reply, Rejection> {
+	let status: bool = result! (client.query("SELECT isAdmin from scrap.team 
+	inner join scrap.session on scrap.team.id = scrap.session.team 
+	where scrap.session.cookie=$1",
+		&[&session]))[0].get("isAdmin");
+	if status {
+		Ok(page("Admin", make_admin(None), client, session)?)
+	}
+	else {
+		Ok(page("Login", make_login(None), client, session)?)
+	}
+}
+
 fn error(err: Rejection) -> Result<impl Reply, Rejection> {
 	match err.status() {
 		StatusCode::METHOD_NOT_ALLOWED => {
@@ -824,6 +851,26 @@ fn logout(mut client: Client, session: String) -> Result<impl Reply, Rejection> 
 	}
 }
 
+fn gib_tickets(mut client: Client, session: String, form: HashMap<String, String>) -> Result<impl Reply, Rejection> {
+	macro_rules! admin_form {
+		($field:expr, $error:expr) => {
+			form!($field, "Admin", $error, make_admin, client, session)
+		}
+	}
+	let name = admin_form!(form.get("name"), "Team name is required.");
+	let tickets = admin_form!(form.get("tickets"), "Number of Tickets are required.");
+	let num_tickets: i32 = tickets.parse::<i32>().unwrap();
+	match client.execute("UPDATE scrap.team SET premium_tickets=premium_tickets+$2
+		WHERE name=$1",
+		&[&name, &num_tickets]) {
+			Ok(_n) => Ok(Response::builder()
+				.header("location", "/admin")
+				.status(StatusCode::SEE_OTHER)
+				.body("gibben".to_string())),
+			Err(e) => return Err(custom(e)),
+		}
+}
+
 pub fn run(port: u16, pool: ClientPool) {
 	let client = any().map(move || pool.get().unwrap());
 	let session = warp::cookie::optional("session")
@@ -840,6 +887,7 @@ pub fn run(port: u16, pool: ClientPool) {
 		.or(get.clone().and(path("login")).and(end()).and_then(get_login))
 		.or(get.clone().and(path("events")).and(end()).and_then(get_almanac))
 		.or(get.clone().and(path("rewards")).and(end()).and_then(get_rewards))
+		.or(get.clone().and(path("admin")).and(end()).and_then(get_admin))
 		.or(post.clone().and(path("challenges")).and(end())
 			.and(body::content_length_limit(4096))
 			.and(body::form()).and_then(submit))
@@ -855,6 +903,9 @@ pub fn run(port: u16, pool: ClientPool) {
 		.or(post.clone().and(path("redeem")).and(end())
 			.and(body::content_length_limit(4096))
 			.and(body::form()).and_then(redeem))
+		.or(post.clone().and(path("admin")).and(end())
+			.and(body::content_length_limit(4096))
+			.and(body::form()).and_then(gib_tickets))
 		.or(get.clone().and(path("logout")).and(end()).and_then(logout))
 		.recover(error);
 	warp::serve(routes).run(([127, 0, 0, 1], port));
