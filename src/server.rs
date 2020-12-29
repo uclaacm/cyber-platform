@@ -199,36 +199,37 @@ fn get_rewards(mut client: Client, session: String) -> Result<impl Reply, Reject
 						h3 { (regular_tickets) " Regular Ticket(s)"  }
 						h3 { (premium_tickets) " Premium Ticket(s)" }
 					}
-					a href = "#help"{ button class="help" { "How does this work?"}}
-					div class = "challenges"{
+					a href = "#help" { 
+						button class="help" { "How does this work?"}
+					}
+					div class = "challenges" {
 						div class = "challenges modal-container" id = "help"{
-						dialog open = "open" id = "help"{
-							h1{a href="https://tinyurl.com/y5l4brzq" target="_blank" rel="noreferrer noopener"{
-								"What is going on here?"
-							}}
-							p{"This quarter, you can earn tickets to redeem special prizes!"}
-							dl{
-								dt{h3{
-									"Regular Prizes"
+							dialog open = "open" id = "help" {
+								h1{a href="https://tinyurl.com/y5l4brzq" target="_blank" rel="noreferrer noopener"{
+									"What is going on here?"
 								}}
-								dd{
-									"You can earn a regular ticket from solving challenges! 50 points gets you 1 regular ticket, which can be exchanged for a random regular prize in the gacha."
+								p{"This quarter, you can earn tickets to redeem special prizes!"}
+								dl{
+									dt{h3{
+										"Regular Prizes"
+									}}
+									dd{
+										"You can earn a regular ticket from solving challenges! 50 points gets you 1 regular ticket, which can be exchanged for a random regular prize in the gacha."
+									}
+									dt{h3{
+										"Premium Prizes"
+									}}
+									dd{
+										"You can earn a premium ticket by submitting a writeup for any workshop challenge."
+									}
+									dd{
+										"In addition, approved writeups will earn an additional 50% of the points the corresponding challenge was worth! Premium prizes will be determined at the end of the quarter through a raffle."
+									}
 								}
-								dt{h3{
-									"Premium Prizes"
-								}}
-								dd{
-									"You can earn a premium ticket by submitting a writeup for any workshop challenge."
-								}
-								dd{
-									"In addition, approved writeups will earn an additional 50% of the points the corresponding challenge was worth! Premium prizes will be determined at the end of the quarter through a raffle."
-								}
-								}
+								a class = "close" href="#!" {"Close"}
 							}
-							a class = "close" href"#!" {"Close"}
 						}
 						a class = "modalbg" href = "#!" {}
-						}
 					}
 				}
 			},
