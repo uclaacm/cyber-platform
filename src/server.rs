@@ -49,7 +49,7 @@ fn make_body(page: &str, content: Markup, mut client: Client, session: String) -
 			body {
 				nav {
 					a.banner href="/" {
-						img src="/static/wordmark.svg";
+						img src="/static/wordmark.svg" alt="ACM Cyber";
 						// span { img src="/static/wordmark.svg"; }
 					}
 					ul {
@@ -108,7 +108,7 @@ fn get_almanac(mut client: Client, session: String) -> Result<impl Reply, Reject
 						input class="workshop" id=(first_slug) name="ws" type="radio" value=(first_id) {}
 						label class="workshop-0" for=(first_slug) { // id gives for, name gives group
 							span {(first_short)}
-							img src= {"/static/events/" (first_slug) ".svg"} {}
+							img src= {"/static/events/" (first_slug) ".svg"} alt=(first_short) {}
 						}
 					}
 					@for event in rest_events.iter() {
@@ -119,7 +119,7 @@ fn get_almanac(mut client: Client, session: String) -> Result<impl Reply, Reject
 							input class="workshop" id=(slug) name="ws" type="radio" value=(id) {}
 							label for=(slug) class="workshop-left" { 
 								span {(short)}
-								img src= {"/static/events/" (slug) ".svg"} {}
+								img src= {"/static/events/" (slug) ".svg"} alt=(short) {}
 							}
 						}
 					}
