@@ -168,6 +168,14 @@ fn get_rewards(mut client: Client, session: String) -> Result<impl Reply, Reject
 		Ok(mut teams) => teams.pop(),
 		Err(e) => return Err(custom(e)),
 	};
+	let prizes: Vec<&str> = vec![
+		"Zoom Background",
+		"Profile Picture",
+		"Cyber Stickers",
+		"Cyber Discord Role",
+		"Cyber Discord Emote",
+		"Cyber Serenade"
+	];
 	Ok(page("Rewards", html! {
 		@match team {
 			Some(team) => {
@@ -205,31 +213,50 @@ fn get_rewards(mut client: Client, session: String) -> Result<impl Reply, Reject
 					div class = "challenges" {
 						div class = "challenges modal-container" id = "help"{
 							dialog open = "open" id = "help" {
-								h1{a href="https://tinyurl.com/y5l4brzq" target="_blank" rel="noreferrer noopener"{
-									"What is going on here?"
-								}}
-								p{"This quarter, you can earn tickets to redeem special prizes!"}
-								dl{
-									dt{h3{
-										"Regular Prizes"
-									}}
-									dd{
-										"You can earn a regular ticket from solving challenges! 50 points gets you 1 regular ticket, which can be exchanged for a random regular prize in the gacha."
+								h1 { 
+									a href="https://tinyurl.com/y5l4brzq" target="_blank" rel="noreferrer noopener" { "What is going on here?" }
+								}
+								p { "This quarter, you can earn tickets to redeem special prizes!" }
+								dl {
+									dt { 
+										h2 { "Regular Prizes" }
 									}
-									dt{h3{
-										"Premium Prizes"
-									}}
-									dd{
-										"You can earn a premium ticket by submitting a writeup for any workshop challenge."
+									dd {
+										"You can earn a regular ticket from solving " 
+										a href="/challenges" target="_blank" rel="noreferrer noopener" { "challenges" } 
+										"! 50 points gets you 1 regular ticket, which can be exchanged for a random regular prize in the gacha. "
 									}
-									dd{
+									dd {
+										"Regular prizes include:"
+										ul class="prizes regular" {
+											@for prize in &prizes {
+												li { (prize) }
+											}
+										}
+									}
+									dt { 
+										h2 { "Premium Prizes" }
+									}
+									dd {
+										"You can earn a premium ticket by submitting a writeup " 
+										a href="http://links.uclaacm.com/cyberwriteup"  target="_blank" rel="noreferrer noopener" { "here" }  
+										" for any workshop challenge. "
+									}
+									dd {
+										"Premium tickets can be submitted in a raffle to win "
+										ul class="prizes" {
+											li { "$10 Amazon Gift Card"}
+											li { "$5 Amazon Gift Card"}
+										}
+									}
+									dd {
 										"In addition, approved writeups will earn an additional 50% of the points the corresponding challenge was worth! Premium prizes will be determined at the end of the quarter through a raffle."
 									}
 								}
-								a class = "close" href="#!" {"Close"}
+								a class = "close" href="#!" { "Close" }
 							}
+						a class = "modal-bg" href = "#!" {}
 						}
-						a class = "modalbg" href = "#!" {}
 					}
 				}
 			},
