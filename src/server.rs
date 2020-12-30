@@ -314,35 +314,47 @@ fn redeem(mut client: Client, session: String, form: HashMap<String, String>) ->
 			team.redeemed_score, 
 			team.premium_tickets, 
 			team.score,
-			CAST(COALESCE(a.counts,0) AS INTEGER) as \"aarin\",
-			CAST(COALESCE(b.counts,0) AS INTEGER) as \"discord_emote\",
-			CAST(COALESCE(c.counts,0) AS INTEGER) as \"discord_role\",
-			CAST(COALESCE(d.counts,0) AS INTEGER) as \"cyber_stickers\"
+			CAST(COALESCE(a.prize,0) AS INTEGER) as \"aarin\",
+			CAST(COALESCE(b.prize,0) AS INTEGER) as \"discord_emote\",
+			CAST(COALESCE(c.prize,0) AS INTEGER) as \"discord_role\",
+			CAST(COALESCE(d.prize,0) AS INTEGER) as \"cyber_stickers\",
+			CAST(COALESCE(e.prize,0) AS INTEGER) as \"steam_game\"
 		FROM scrap.team as team
 		LEFT JOIN (
 			SELECT
-				team, prize, counts
+				team, COUNT(prize) as prize
 			FROM scrap.prize
 			WHERE prize=\'Aarin Serenade\'
+			GROUP BY team
 		) a ON team.id = a.team
 		LEFT JOIN (
 			SELECT
-				team, prize, counts
+				team, COUNT(prize) as prize
 			FROM scrap.prize
 			WHERE prize=\'Cyber Discord Emote\'
+			GROUP BY team
 		) b ON team.id = b.team
 		LEFT JOIN (
 			SELECT
-				team, prize, counts
+				team, COUNT(prize) as prize
 			FROM scrap.prize
 			WHERE prize=\'Cyber Discord Role\'
+			GROUP BY team
 		) c ON team.id = c.team
 		LEFT JOIN (
 			SELECT
-				team, prize, counts
+				team, COUNT(prize) as prize
 			FROM scrap.prize
 			WHERE prize=\'Cyber Stickers\'
+			GROUP BY team
 		) d ON team.id = d.team
+		LEFT JOIN (
+			SELECT
+				team, COUNT(prize) as prize
+			FROM scrap.prize
+			WHERE prize=\'Steam Game\'
+			GROUP BY team
+		) e ON team.id = e.team
 		WHERE id=lookup($1)",
 		&[&session]) {
 		Ok(mut teams) => teams.pop(),
@@ -362,10 +374,12 @@ fn redeem(mut client: Client, session: String, form: HashMap<String, String>) ->
 						let discord_role_count: i32 = team.get("discord_role");
 						let discord_emote_count: i32 = team.get("discord_emote");
 						let aarin_count: i32 = team.get("aarin");
+						let steam_game_count: i32 = team.get("steam_game");
 						let mut stickers = 2.0;
 						let mut discord_role = 30.0;
 						let mut discord_emote = 0.5;
 						let mut aarin = 0.5;
+						let mut steam_game = 0.5;
 						if stickers_count > 0 {
 							stickers = 0.0;
 						}
@@ -378,11 +392,14 @@ fn redeem(mut client: Client, session: String, form: HashMap<String, String>) ->
 						if aarin_count > 0 {
 							aarin = 0.0;
 						}
-						let leftover_prob = 100.0 - (stickers + discord_role + discord_emote + aarin);
+						if steam_game_count > 0 {
+							steam_game = 0.0;
+						}
+						let leftover_prob = 100.0 - (stickers + discord_role + discord_emote + aarin + steam_game);
 						let zoom_background = 0.6 * leftover_prob;
 						let profile_pic = 0.4 * leftover_prob;
 
-						let weights = [zoom_background, profile_pic, stickers, discord_role, discord_emote, aarin];
+						let weights = [zoom_background, profile_pic, stickers, discord_role, discord_emote, aarin, steam_game];
 						let dist = WeightedIndex::new(&weights).unwrap();
 						let idx = dist.sample(&mut rand::thread_rng());
 						let prizes: Vec<&str> = vec![
@@ -391,7 +408,8 @@ fn redeem(mut client: Client, session: String, form: HashMap<String, String>) ->
 							"Cyber Stickers",
 							"Cyber Discord Role",
 							"Cyber Discord Emote",
-							"Aarin Serenade"
+							"Aarin Serenade",
+							"Steam Game"
 						];
 						match client.execute("UPDATE scrap.team team
 							SET redeemed_score=redeemed_score+50
@@ -402,8 +420,7 @@ fn redeem(mut client: Client, session: String, form: HashMap<String, String>) ->
 						}
 						match client.execute("INSERT INTO scrap.prize
 							(id, team, prize) VALUES ($3, $1, $2)
-							ON CONFLICT (id) DO UPDATE
-							SET counts=EXCLUDED.counts+1",
+							ON CONFLICT (id) DO NOTHING",
 							&[&id, &prizes[idx].to_string(), &format!("{}{}", &id, &prizes[idx])]) {
 							Ok(_) => (),
 							Err(e) => return Err(custom(e))
