@@ -174,7 +174,8 @@ fn get_rewards(mut client: Client, session: String) -> Result<impl Reply, Reject
 		"Cyber Stickers",
 		"Cyber Discord Role",
 		"Cyber Discord Emote",
-		"Cyber Serenade"
+		"Cyber Serenade",
+		"Steam Game	"
 	];
 	Ok(page("Rewards", html! {
 		@match team {
@@ -190,13 +191,13 @@ fn get_rewards(mut client: Client, session: String) -> Result<impl Reply, Reject
 						li {  
 							form method="POST" action="./redeem" {
 								input type="hidden" name="type" value="regular" {}
-								button type="submit" class="gacha-tiles" style="background-color:#ffe5a1;" { span{"Regular"} }
+								button type="submit" class="gacha-tiles" id="regular-tile" style="background-color:#ffe5a1;" { span{"Regular"} }
 							}
 						}
 						li { 
 							form method="POST" action="./redeem" {
 								input type="hidden" name="type" value="premium" {}
-								button type="submit" class="gacha-tiles" { span{"Premium"} }
+								button type="submit" class="gacha-tiles" id="premium-tile" { span{"Premium"} }
 							} 
 						}
 					}
@@ -259,6 +260,7 @@ fn get_rewards(mut client: Client, session: String) -> Result<impl Reply, Reject
 						}
 					}
 				}
+				script src="/static/rewards.js" {}
 			},
 			None => {
 				p class="not-logged-in" { "Log in to view rewards." }
