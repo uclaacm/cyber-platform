@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Rewards | ACM Cyber</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Chivo&family=Poppins:wght@700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.svg') }}">
+</head>
+
+<body>
+  <nav><a class="banner" href="/"><img src="{{ url_for('static', filename='wordmark.svg') }}" alt="ACM Cyber"></a>
+    <ul>
+      <li><a href="/events">Events</a></li>
+      <li><a href="/challenges">Challenges</a></li>
+      <li><a href="/scoreboard">Scoreboard</a></li>
+      <li><a href="/rewards">Rewards</a></li>
+      <li><a href="/profile">Profile</a></li>
+      <li><a href="/logout">Logout</a></li>
+    </ul>
+  </nav>
+  {% block content %}{% endblock %}
+</body>
+
+</html>
