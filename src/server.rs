@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use chrono::offset::Utc;
+use chrono::{DateTime, Utc};
 use maud::{html, DOCTYPE, Markup, PreEscaped};
 use r2d2_postgres::postgres::error::SqlState;
 use r2d2_postgres::postgres::row::Row;
@@ -50,7 +50,7 @@ fn make_body(page: &str, content: Markup, mut client: Client, session: String) -
 			body {
 				nav {
 					a.banner href="/" {
-						img src="/static/wordmark.svg";
+						img src="/static/wordmark.svg" alt="ACM Cyber";
 						// span { img src="/static/wordmark.svg"; }
 					}
 					ul {
@@ -110,7 +110,7 @@ fn get_almanac(mut client: Client, session: String) -> Result<impl Reply, Reject
 						input class="workshop" id=(first_slug) name="ws" type="radio" value=(first_id) {}
 						label class="workshop-0" for=(first_slug) { // id gives for, name gives group
 							span {(first_short)}
-							img src= {"/static/events/" (first_slug) ".svg"} {}
+							img src= {"/static/events/" (first_slug) ".svg"} alt=(first_short) {}
 						}
 					}
 					@for event in rest_events.iter() {
@@ -121,7 +121,7 @@ fn get_almanac(mut client: Client, session: String) -> Result<impl Reply, Reject
 							input class="workshop" id=(slug) name="ws" type="radio" value=(id) {}
 							label for=(slug) class="workshop-left" { 
 								span {(short)}
-								img src= {"/static/events/" (slug) ".svg"} {}
+								img src= {"/static/events/" (slug) ".svg"} alt=(short) {}
 							}
 						}
 					}
@@ -507,7 +507,7 @@ fn redeem(mut client: Client, session: String, form: HashMap<String, String>) ->
 fn get_challenges(mut client: Client, session: String, invalid: String) -> Result<impl Reply, Rejection> {
 	let now = Utc::now();
 	let ctf = &result!(client.query("SELECT start, stop FROM scrap.ctf", &[]))[0];
-	if ctf.try_get("start").map(|start| now < start).unwrap_or(false) {
+	if ctf.try_get("start").map(|start: DateTime<Utc>| now < start).unwrap_or(false) {
 		return Ok(with_header(page("Challenges", html! {
 			h1 { "Challenges" }
 			p { "Challenges are not available." }
@@ -588,7 +588,7 @@ fn get_challenges(mut client: Client, session: String, invalid: String) -> Resul
 fn get_scoreboard(mut client: Client, session: String) -> Result<impl Reply, Rejection> {
 	let now = Utc::now();
 	let ctf = &result!(client.query("SELECT start, stop FROM scrap.ctf", &[]))[0];
-	if ctf.try_get("start").map(|start| now < start).unwrap_or(false) {
+	if ctf.try_get("start").map(|start: DateTime<Utc>| now < start).unwrap_or(false) {
 		return Ok(page("Scoreboard", html! {
 			h1 { "Scoreboard" }
 			p { "Scoreboard is not available." }
@@ -766,8 +766,8 @@ fn error(err: Rejection) -> Result<impl Reply, Rejection> {
 fn submit(mut client: Client, session: String, form: HashMap<String, String>) -> Result<impl Reply, Rejection> {
 	let now = Utc::now();
 	let ctf = &result!(client.query("SELECT start, stop FROM scrap.ctf", &[]))[0];
-	if ctf.try_get("start").map(|start| now < start).unwrap_or(false) || 
-		ctf.try_get("stop").map(|stop| now > stop).unwrap_or(false) {
+	if ctf.try_get("start").map(|start: DateTime<Utc>| now < start).unwrap_or(false) || 
+		ctf.try_get("stop").map(|stop: DateTime<Utc>| now > stop).unwrap_or(false) {
 		return Ok(Response::builder()
 			.header("location", "/challenges")
 			.status(StatusCode::SEE_OTHER)
