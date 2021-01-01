@@ -2,15 +2,16 @@ from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 import os
 import random
-from flask_wtf.csrf import CSRFProtect
+from flask_wtf.csrf import CSRFProtect, CSRFError, generate_csrf
 
-if os.environ['STATIC_PATH']:
+if 'STATIC_PATH' in os.environ:
     app = Flask(__name__, static_folder=os.environ['STATIC_PATH'])
 else:
     app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['URI']
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+csrf = CSRFProtect(app)
 db = SQLAlchemy(app)
 
 from schema import *
@@ -35,7 +36,7 @@ one_time_only = [
 
 @app.route('/rewards')
 def rewards():
-    team = Session.query.get(request.cookies.get('session'))
+    team = Session.query.get(request.cookies.get('session2'))
     if team is None:
         return render_template('error.html', message="Login to view rewards.")
     team = team.team_lookup
@@ -56,7 +57,7 @@ def redeem():
     if reward_type is None:
         return "Invalid request", 400
 
-    team = Session.query.get(request.cookies.get('session'))
+    team = Session.query.get(request.cookies.get('session2'))
     if team is None:
         return render_template('error.html', message="Login to view rewards.")
     team = team.team_lookup

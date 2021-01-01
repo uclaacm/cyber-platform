@@ -5,6 +5,7 @@
   <ul>
     <li>
       <form method="POST" action="{{ url_for('redeem') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <input type="hidden" name="type" value="regular"></input>
         <button
           type="submit" class="gacha-tiles" id="regular-tile"
@@ -12,6 +13,7 @@
     </li>
     <li>
       <form method="POST" action="{{ url_for('redeem') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <input type="hidden" name="type" value="premium"></input>
         <button
           type="submit" class="gacha-tiles" id="premium-tile"><span>Premium</span></button></form>
