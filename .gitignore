@@ -1,3 +1,6 @@
 target
 static/files
 static/events
+.env
+__pycache__/
+venv/
