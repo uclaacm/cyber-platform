@@ -47,7 +47,6 @@ class Raffle(db.Model):
   __table_args__ = {'schema': 'scrap'}
 
   team = db.Column(db.Integer, db.ForeignKey('scrap.team.id', ondelete="CASCADE"), nullable=False)
-  # id doesn't exist in the actual table, this is a hack so sqlalchemy doesn't get mad
   id = db.Column(db.Integer, primary_key=True) 
 
   def __init__(self, team):
