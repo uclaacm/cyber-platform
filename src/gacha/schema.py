@@ -35,7 +35,7 @@ class Prize(db.Model):
   prize = db.Column(db.String(), nullable=False)
 
   def __init__(self, team, prize):
-    self.id = team+prize
+    self.id = '{}{}'.format(team, prize)
     self.team = team
     self.prize = prize
 
@@ -47,7 +47,8 @@ class Raffle(db.Model):
   __table_args__ = {'schema': 'scrap'}
 
   team = db.Column(db.Integer, db.ForeignKey('scrap.team.id', ondelete="CASCADE"), nullable=False)
-  id = db.Column(db.Integer, primary_key=True)
+  # id doesn't exist in the actual table, this is a hack so sqlalchemy doesn't get mad
+  id = db.Column(db.Integer, primary_key=True) 
 
   def __init__(self, team):
     self.team = team
