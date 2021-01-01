@@ -4,12 +4,16 @@
 <section class="prizes tiles">
   <ul>
     <li>
-      <form method="POST" action="{{ url_for('redeem') }}"><input type="hidden" name="type" value="regular"></input><button
+      <form method="POST" action="{{ url_for('redeem') }}">
+        <input type="hidden" name="type" value="regular"></input>
+        <button
           type="submit" class="gacha-tiles" id="regular-tile"
           style="background-color:#ffe5a1;"><span>Regular</span></button></form>
     </li>
     <li>
-      <form method="POST" action="{{ url_for('redeem') }}"><input type="hidden" name="type" value="premium"></input><button
+      <form method="POST" action="{{ url_for('redeem') }}">
+        <input type="hidden" name="type" value="premium"></input>
+        <button
           type="submit" class="gacha-tiles" id="premium-tile"><span>Premium</span></button></form>
     </li>
   </ul>

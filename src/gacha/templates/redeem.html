@@ -3,37 +3,47 @@
 {% block content %}
 
 <section class="rewards">
-  <div class="gacha">
-    <div class="gacha-top"></div>
-    <div class="gacha-window">
-      <div style="min-height:80px;"></div>
-      <section class="tiles">
-        <ul>
-          <li><a></a></li>
-          <li><a></a></li>
-          <li><a></a></li>
-          <li><a></a></li>
-          <li><a></a></li>
-          <li><a></a></li>
-          <li><a></a></li>
-        </ul>
-      </section>
-    </div>
-    <div class="gacha-control">
-      <div class="gacha-knob">
-        <div class="gacha-knob-turn"></div>
+  {% if enough %}
+    {% if regular %}
+      <div class="gacha">
+        <div class="gacha-top"></div>
+        <div class="gacha-window">
+          <div style="min-height:80px;"></div>
+          <section class="tiles">
+            <ul>
+              <li><a></a></li>
+              <li><a></a></li>
+              <li><a></a></li>
+              <li><a></a></li>
+              <li><a></a></li>
+              <li><a></a></li>
+              <li><a></a></li>
+            </ul>
+          </section>
+        </div>
+        <div class="gacha-control">
+          <div class="gacha-knob">
+            <div class="gacha-knob-turn"></div>
+          </div>
+          <div class="gacha-out"></div>
+        </div>
       </div>
-      <div class="gacha-out"></div>
+    {% else %}
+      <p>You've entered a ticket into the raffle!</p>
+    {% endif %}
+    <h2>Congrats! You won... {{ prize }}</h2>
+    <p>The Cyber Discord Bot will give you your prize</p>
+    <div style="display:flex;align-items:baseline;justify-content:center"><label class="switch"><input type="checkbox"
+          id="confettitoggle" checked><span class="slider round"></span></input></label>
+      <p>Toggle Confetti</p>
     </div>
-  </div>
-  <h2>Congrats! You won... Cyber Discord Role</h2>
-  <p>The Cyber Discord Bot will give you your prize</p>
-  <div style="display:flex;align-items:baseline;justify-content:center"><label class="switch"><input type="checkbox"
-        id="confettitoggle" checked><span class="slider round"></span></input></label>
-    <p>Toggle Confetti</p>
-  </div>
-  <script src="{{ url_for('static', filename='gacha.js') }}"></script><a href="{{ url_for('rewards') }}"><button
-      class="help">Back to Rewards</button></a>
+    <script src="{{ url_for('static', filename='gacha.js') }}"></script>
+  {% else %}
+    <p>Not enough tickets.</p>
+  {% endif %}
+  <a href="{{ url_for('rewards') }}">
+    <button class="help">Back to Rewards</button>
+  </a>
 </section>
 
 {% endblock %}

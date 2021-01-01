@@ -1565,7 +1565,6 @@ dependencies = [
  "postgres",
  "pulldown-cmark",
  "r2d2_postgres",
- "rand 0.8.0",
  "regex",
  "serde",
  "signal-hook",
