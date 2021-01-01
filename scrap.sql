@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS scrap.team (
 	score INTEGER DEFAULT 0,
 	redeemed_score INTEGER DEFAULT 0,
 	premium_tickets INTEGER DEFAULT 0,
-	isAdmin BOOLEAN DEFAULT 'false',
+	isadmin BOOLEAN DEFAULT 'false',
 	submit TIMESTAMP DEFAULT NOW()
 );
 
