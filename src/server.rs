@@ -176,7 +176,7 @@ fn get_rewards(mut client: Client, session: String) -> Result<impl Reply, Reject
 		"Cyber Discord Role",
 		"Cyber Discord Emote",
 		"Cyber Serenade",
-		"Steam Game	"
+		"Steam Game"
 	];
 	Ok(page("Rewards", html! {
 		@match team {

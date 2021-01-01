@@ -14,12 +14,16 @@
       <li><a href="/events">Events</a></li>
       <li><a href="/challenges">Challenges</a></li>
       <li><a href="/scoreboard">Scoreboard</a></li>
-      <li><a href="/rewards">Rewards</a></li>
+      <li><a href="{{ url_for('rewards') }}">Rewards</a></li>
       <li><a href="/profile">Profile</a></li>
       <li><a href="/logout">Logout</a></li>
     </ul>
   </nav>
-  {% block content %}{% endblock %}
+  <main>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <h1>Rewards</h1>
+    {% block content %}{% endblock %}
+  </main>
 </body>
 
 </html>
