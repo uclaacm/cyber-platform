@@ -582,7 +582,7 @@ fn login(mut client: Client, session: String, form: HashMap<String, String>) -> 
 	};
 	Ok(Response::builder()
 		.header("location", "/challenges")
-		.header("set-cookie", format!("session={}; HttpOnly; SameSite=Lax; Max-Age=31536000", cookie))
+		.header("set-cookie", format!("session2={}; HttpOnly; SameSite=Lax; Max-Age=31536000", cookie))
 		.status(StatusCode::SEE_OTHER)
 		.body("".to_string()))
 }
@@ -621,7 +621,7 @@ fn gib_tickets(mut client: Client, session: String, form: HashMap<String, String
 
 pub fn run(port: u16, pool: ClientPool) {
 	let client = any().map(move || pool.get().unwrap());
-	let session = warp::cookie::optional("session")
+	let session = warp::cookie::optional("session2")
 		.map(|cookie: Option<String>| cookie.unwrap_or(String::new()));
 	let invalid = warp::cookie::optional("invalid")
 		.map(|cookie: Option<String>| cookie.unwrap_or(String::new()));
