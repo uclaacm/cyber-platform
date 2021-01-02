@@ -101,18 +101,51 @@ section {
 	height: 0;
 }
 
-.tiles > ul > li > a {
+.tiles > ul > li > a, .tiles > ul > li .gacha-tiles {
 	color: #242424;
 	background-color: #ffba44;
 	position: absolute;
 	display: block;
 	z-index: 1;
+	transition: none;
 	transform: rotate(45deg);
 	width: calc(90% * (1/1.4142135623730950488016887242097));
 	height: calc(90% * (1/1.4142135623730950488016887242097));
 	top: calc((100% - 90% * (1/1.4142135623730950488016887242097)) / 2);
 	left: calc((100% - 90% * (1/1.4142135623730950488016887242097)) / 2);
 	border-radius: 15%;
+	border: none;
+}
+
+.tiles > ul > li .gacha-tiles:hover {
+	cursor: pointer;
+}
+
+.tiles > ul > li .gacha-tiles > span {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	transform: rotate(-45deg);
+	width: 100%;
+	height: 100%;
+	font-size: 1.1rem;
+	font-weight: bold;
+	font-family: 'Poppins', sans-serif;
+}
+
+.tiles > ul > li > a > span {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	position: absolute;
+	transform: rotate(-45deg);
+	width: 100%;
+	height: 100%;
+	font-size: 1.1rem;
+	font-weight: bold;
+	font-family: 'Poppins', sans-serif;
 }
 
 .challenges > ul > li > a[solved] {
@@ -414,7 +447,7 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 		background-color: #ffe5a1;
 	}
 
-	.tiles > ul > li > a {
+	.tiles > ul > li > a, .tiles > ul > li .gacha-tiles {
 		font-size: calc(6vw / 2);
 	}
 
@@ -449,7 +482,7 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 		background-color: #ffe5a1;
 	}
 
-	.tiles > ul > li > a {
+	.tiles > ul > li > a, .tiles > ul > li .gacha-tiles {
 		font-size: calc(6vw / 3);
 	}
 
@@ -733,4 +766,231 @@ input:checked.workshop ~ label img, input.workshop ~ label span {
 .login form button,
 .register form button {
 	background-color: #ffba44;
+}
+
+.tickets {
+	border: solid #ffba44 thin;
+	border-radius: 8px;
+	margin: 20% 30% 1%;
+	display: flex;
+	flex-direction: column;
+	align-items:center;
+}
+
+.help {
+	background-color: #ffba44;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 1rem;
+	font-weight: 700;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	border: none;
+	padding: .25rem .5rem;
+	border-radius: 2px;
+	cursor: pointer;
+}
+
+.gacha {
+	min-height: 200px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.gacha > div {
+	animation: fadeIn ease 3s;
+}
+
+@keyframes fadeIn {
+	0% { opacity:0; }
+	100% { opacity:1; }
+}
+
+.gacha-top {
+	height: 30px;
+	width: 200px;
+	border-radius: 8px;
+	background-color: #ffba44;
+}
+
+.gacha-window {
+	min-height: 300px;
+	width: 300px;
+	border-radius: 20%;
+	background-color: #fff2cc;
+}
+
+.gacha-control {
+	min-height: 150px;
+	padding: 8px 5px;
+	width:220px;
+	border-radius: 18px;
+	background-color:  #ffba44;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.gacha-knob {
+	height: 75px;
+	width: 75px;
+	border-radius: 100%;
+	background-color: #fff2cc;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+@keyframes crank {
+	from { transform: rotate(20deg); }
+	to { transform: rotate(320deg); }
+}
+.gacha-knob-turn {
+	height: 15px;
+	width: 60px;
+	border-radius: 5%;
+	background-color: #ffba44;
+	border: #ffbdff;
+	animation: crank;
+	animation-duration: 2s;
+}
+
+
+.gacha-out {
+	height: 70px;
+	width: 70px;
+	background-color: brown;
+	border-radius: 15%;
+	transform: rotate(45deg);
+}
+
+
+ /* The switch - the box around the slider */
+ .switch {
+    position: relative;
+    display: inline-block;
+    width: 2.7rem;
+    height: 1.2rem;
+  }
+  
+  /* Hide default HTML checkbox */
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  /* The slider */
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 5px;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 1rem;
+    width: 1rem;
+    left: .2rem;
+    bottom: .15rem;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #ffba44;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #ffba44;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(1rem);
+    -ms-transform: translateX(1rem);
+    transform: translateX(1rem);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  } 
+
+ul.prizes {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-around;
+}
+
+ul.regular > li {
+	flex-basis: 33%;
+}
+
+ul.prizes > li::marker {
+	content: "🔑";
+}
+
+.container {
+	width: 100%;
+	height: 100%;
+}
+.confetti {
+	width: 15px;
+	height: 15px;
+	background-color: #f2d74e;
+	position: absolute;
+	left: 50%;
+	animation: confetti 5s ease-in-out -2s infinite;
+	transform-origin: left top;
+}
+.confetti:nth-child(1) {
+background-color: #f2d74e; left: 10%; animation-delay: 0;
+}
+.confetti:nth-child(2) {
+background-color: #95c3de; left: 20%; animation-delay: -5s;
+}
+.confetti:nth-child(3) {
+background-color: #ff9a91; left: 30%; animation-delay: -3s;
+}
+.confetti:nth-child(4) {
+background-color: #f2d74e; left: 40%; animation-delay: -2.5s;
+}
+.confetti:nth-child(5) {
+background-color: #95c3de; left: 50%; animation-delay: -4s;
+}
+.confetti:nth-child(6) {
+background-color: #ff9a91; left: 60%; animation-delay: -6s;
+}
+.confetti:nth-child(7) {
+background-color: #f2d74e; left: 70%; animation-delay: -1.5s;
+}
+.confetti:nth-child(8) {
+background-color: #95c3de; left: 80%; animation-delay: -2s;
+}
+.confetti:nth-child(9) {
+background-color: #ff9a91; left: 90%; animation-delay: -3.5s;
+}
+.confetti:nth-child(10) {
+background-color: #f2d74e; left: 100%; animation-delay: -2.5s;
+}
+
+@keyframes confetti {
+0% { transform: rotateZ(15deg) rotateY(0deg) translate(0,0); }
+25% { transform: rotateZ(5deg) rotateY(360deg) translate(-5vw,20vh); }
+50% { transform: rotateZ(15deg) rotateY(720deg) translate(5vw,60vh); }
+75% { transform: rotateZ(5deg) rotateY(1080deg) translate(-10vw,80vh); }
+100% { transform: rotateZ(15deg) rotateY(1440deg) translate(10vw,110vh); }
 }
