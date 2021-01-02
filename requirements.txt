@@ -4,3 +4,4 @@ flask-sqlalchemy
 psycopg2
 gunicorn
 Flask-WTF
+discord-webhook
