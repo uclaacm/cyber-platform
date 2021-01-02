@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="prizes tiles">
+  <ul>
+    <li>
+      <form method="POST" action="{{ url_for('redeem') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <input type="hidden" name="type" value="regular"></input>
+        <button
+          type="submit" class="gacha-tiles" id="regular-tile"
+          style="background-color:#ffe5a1;"><span>Regular</span></button></form>
+    </li>
+    <li>
+      <form method="POST" action="{{ url_for('redeem') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <input type="hidden" name="type" value="premium"></input>
+        <button
+          type="submit" class="gacha-tiles" id="premium-tile"><span>Premium</span></button></form>
+    </li>
+  </ul>
+</section>
+<section>
+  <div class="tickets">
+    <h2>You have</h2>
+    <h3>{{ regular_tickets }} Regular Ticket(s)</h3>
+    <h3>{{ premium_tickets }} Premium Ticket(s)</h3>
+  </div><a href="#help"><button class="help">How does this work?</button></a>
+  <div class="challenges">
+    <div class="challenges modal-container" id="help">
+      <dialog open="open" id="help">
+        <h1><a href="https://tinyurl.com/y5l4brzq" target="_blank" rel="noreferrer noopener">What is going on
+            here?</a></h1>
+        <p>This quarter, you can earn tickets to redeem special prizes!</p>
+        <dl>
+          <dt>
+            <h2>Regular Prizes</h2>
+          </dt>
+          <dd>You can earn a regular ticket from solving <a href="/challenges" target="_blank"
+              rel="noreferrer noopener">challenges</a>! 50 points gets you 1 regular ticket, which can be exchanged
+            for a random regular prize in the gacha. </dd>
+          <dd>Regular prizes include:<ul class="prizes regular">
+            {% for prize in prizes %}
+            <li>{{ prize }}</li>
+            {% endfor %}
+            </ul>
+          </dd>
+          <dt>
+            <h2>Premium Prizes</h2>
+          </dt>
+          <dd>You can earn a premium ticket by submitting a writeup <a href="http://links.uclaacm.com/cyberwriteup"
+              target="_blank" rel="noreferrer noopener">here</a> for any workshop challenge. </dd>
+          <dd>Premium tickets can be submitted in a raffle to win <ul class="prizes">
+              <li>$10 Amazon Gift Card</li>
+              <li>$5 Amazon Gift Card</li>
+            </ul>
+          </dd>
+          <dd>In addition, approved writeups will earn an additional 50% of the points the corresponding challenge
+            was worth! Premium prizes will be determined at the end of the quarter through a raffle.</dd>
+        </dl><a class="close" href="#!">Close</a>
+      </dialog><a class="modal-bg" href="#!"></a>
+    </div>
+  </div>
+</section>
+<script src="{{ url_for('static', filename='rewards.js') }}"></script>
+
+{% endblock %}
