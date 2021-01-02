@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 import random
 from flask_wtf.csrf import CSRFProtect, CSRFError, generate_csrf
+from discord_webhook import DiscordWebhook
 
 if 'STATIC_PATH' in os.environ:
     app = Flask(__name__, static_folder=os.environ['STATIC_PATH'])
@@ -93,6 +94,10 @@ def redeem():
                 prize_record = Prize(team.id, prize)
                 db.session.add(prize_record)
                 db.session.commit()
+            
+            webhook_msg = '##prize \"{}\" \"{}\" \"{}\"'.format(team.name, team.discord, prize)
+            webhook = DiscordWebhook(url=os.environ['WEBHOOK_URL'], content=webhook_msg)
+            webhook.execute()
 
             return render_template('redeem.html', prize=prize, enough=True, regular=True, logged_in=True)
         else:
