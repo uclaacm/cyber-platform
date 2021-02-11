@@ -49,5 +49,5 @@ SELECT ((COALESCE(solves, 0) >> (id - 1)) & 1)=1;
 $$ LANGUAGE sql IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION update(solves BIGINT, id INTEGER) RETURNS BIGINT AS $$
-SELECT solves | (1 << (id - 1));
+SELECT solves | (CAST(1 AS BIGINT) << (id - 1));
 $$ LANGUAGE sql IMMUTABLE;
