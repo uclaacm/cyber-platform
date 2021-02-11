@@ -16,11 +16,25 @@ CREATE TABLE IF NOT EXISTS scrap.challenge (
 CREATE TABLE IF NOT EXISTS scrap.team (
 	id SERIAL PRIMARY KEY,
 	name TEXT NOT NULL UNIQUE,
-	email TEXT NOT NULL UNIQUE,
+	discord TEXT NOT NULL UNIQUE,
 	hash TEXT NOT NULL,
 	solves BIGINT DEFAULT 0,
 	score INTEGER DEFAULT 0,
+	redeemed_score INTEGER DEFAULT 0,
+	premium_tickets INTEGER DEFAULT 0,
+	isadmin BOOLEAN DEFAULT 'false',
 	submit TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS scrap.prize (
+	id TEXT NOT NULL UNIQUE,
+	team INTEGER NOT NULL REFERENCES scrap.team ON DELETE CASCADE,
+	prize TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS scrap.raffle (
+	id SERIAL PRIMARY KEY,
+	team INTEGER NOT NULL REFERENCES scrap.team ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS scrap.session (
@@ -34,6 +48,16 @@ CREATE TABLE IF NOT EXISTS scrap.ctf (
 	home TEXT NOT NULL,
 	start TIMESTAMP WITH TIME ZONE,
 	stop TIMESTAMP WITH TIME ZONE
+);
+
+CREATE TABLE IF NOT EXISTS scrap.event (
+	id INTEGER NOT NULL UNIQUE,
+	title TEXT NOT NULL,
+	short TEXT NOT NULL,
+	date TEXT NOT NULL,
+	description TEXT NOT NULL,
+	link TEXT,
+	slides TEXT
 );
 
 CREATE INDEX IF NOT EXISTS team_name_hash_index ON scrap.team (name, hash);

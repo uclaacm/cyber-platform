@@ -1,0 +1,7 @@
+flask
+python-dotenv
+flask-sqlalchemy
+psycopg2
+gunicorn
+Flask-WTF
+discord-webhook
