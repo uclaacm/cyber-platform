@@ -57,6 +57,7 @@ fn make_body(page: &str, content: Markup, mut client: Client, session: String) -
 						li { a href="/events" { "Events" } }
 						li { a href="/challenges" { "Challenges" } }
 						li { a href="/scoreboard" { "Scoreboard" } }
+						li { a href="/internship" { "Internship" } }
 						@if count > 0 {
 							li { a href="/rewards" { "Rewards" } }
 							li { a href="/profile" { "Profile" } }
@@ -291,6 +292,13 @@ fn get_scoreboard(mut client: Client, session: String) -> Result<impl Reply, Rej
 				}
 			}
 		}
+	}, client, session)?)
+}
+
+fn get_internship(mut client: Client, session: String) -> Result<impl Reply, Rejection> {
+	Ok(page("Internship", html! {
+		h1 { "Internship" }
+		p { "This is the internship page." }
 	}, client, session)?)
 }
 
@@ -630,6 +638,7 @@ pub fn run(port: u16, pool: ClientPool) {
 	let routes = get.clone().and(end()).and_then(get_home)
 		.or(get.clone().and(path("challenges")).and(end()).and(invalid.clone()).and_then(get_challenges))
 		.or(get.clone().and(path("scoreboard")).and(end()).and_then(get_scoreboard))
+		.or(get.clone().and(path("internship")).and(end()).and_then(get_internship))
 		.or(get.clone().and(path("profile")).and(end()).and_then(get_profile))
 		.or(get.clone().and(path("register")).and(end()).and_then(get_register))
 		.or(get.clone().and(path("login")).and(end()).and_then(get_login))
