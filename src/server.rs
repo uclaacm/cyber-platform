@@ -100,7 +100,7 @@ fn get_almanac(mut client: Client, session: String) -> Result<impl Reply, Reject
 		&[]));
 	Ok(page("Events", html! {
 		script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" {}
-		h1 { "Fall 2021 Events" }
+		h1 { "Winter 2022 Events" }
 		section class="events tiles" {
 			
 			ul {
