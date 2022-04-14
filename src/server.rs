@@ -58,9 +58,9 @@ fn make_body(page: &str, content: Markup, mut client: Client, session: String) -
 						li { a href="/events" { "Events" } }
 						li { a href="/challenges" { "Challenges" } }
 						li { a href="/scoreboard" { "Scoreboard" } }
-						li { a href="/internship" { "Internship" } }
+						// li { a href="/internship" { "Internship" } }
 						@if count > 0 {
-							li { a href="/rewards" { "Rewards" } }
+							// li { a href="/rewards" { "Rewards" } }
 							li { a href="/profile" { "Profile" } }
 							li { a href="/logout" { "Logout" } }
 						} @else {
