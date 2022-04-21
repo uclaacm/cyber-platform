@@ -602,7 +602,7 @@ fn login(mut client: Client, session: String, form: HashMap<String, String>) -> 
 	};
 	Ok(Response::builder()
 		.header("location", "/challenges")
-		.header("set-cookie", format!("session2={}; HttpOnly; SameSite=Lax; Max-Age=31536000", cookie))
+		.header("set-cookie", format!("session2={}; HttpOnly; SameSite=Lax; Max-Age=86400", cookie))
 		.status(StatusCode::SEE_OTHER)
 		.body("".to_string()))
 }
