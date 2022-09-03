@@ -305,11 +305,9 @@ fn get_internship(client: Client, session: String) -> Result<impl Reply, Rejecti
 		p { "The answer is a resounding no. We want people who are excited to learn and teach about cyber to join us!"}
 		p {" As a cyber intern you'll work alongside officers to conceptualize and build workshops. You will get to concoct your own challenges for both workshops and the CTF After Dark events. But don't worry! You will have a set of mentors (and the whole team) to help you along the way. "}
 		p {" After a quarter of serving as a Cyber intern, you will *ascend* to officer."}
-		br{}
 		h2 { "Applying"}
 		p {"If you are on the ACM general mailing list, you'll receive an email when all intern program applications (not just Cyber) are open. Use that link and answer the Cyber specific questions."}
 		p {"From there you'll receive updates about next steps, likely an interview with a current officer. It is not a rigorous process and overall we want you to be 100% yourself. You don't need to be the world's up-and-coming white hat hacker to fit with the Cyber team :-)"}
-		br{}
 		h2 { "Do we get paid?"}
 		p {"No"}
 	}, client, session)?)
