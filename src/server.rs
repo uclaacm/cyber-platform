@@ -58,7 +58,7 @@ fn make_body(page: &str, content: Markup, mut client: Client, session: String) -
 						li { a href="/events" { "Events" } }
 						li { a href="/challenges" { "Challenges" } }
 						li { a href="/scoreboard" { "Scoreboard" } }
-						// li { a href="/internship" { "Internship" } }
+						li { a href="/internship" { "Internship" } }
 						@if count > 0 {
 							// li { a href="/rewards" { "Rewards" } }
 							li { a href="/profile" { "Profile" } }
@@ -296,7 +296,7 @@ fn get_scoreboard(mut client: Client, session: String) -> Result<impl Reply, Rej
 	}, client, session)?)
 }
 
-fn get_internship(mut client: Client, session: String) -> Result<impl Reply, Rejection> {
+fn get_internship(client: Client, session: String) -> Result<impl Reply, Rejection> {
 	Ok(page("Internship", html! {
 		h1 { "All About the Cyber Internship" }
 		h2 { "Being a Cyber Intern"}
