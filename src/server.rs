@@ -55,6 +55,7 @@ fn make_body(page: &str, content: Markup, mut client: Client, session: String) -
 						// span { img src="/static/wordmark.svg"; }
 					}
 					ul {
+						li { a href="/pbr" {"PBR"} }
 						li { a href="/events" { "Events" } }
 						li { a href="/challenges" { "Challenges" } }
 						li { a href="/scoreboard" { "Scoreboard" } }
@@ -311,6 +312,23 @@ fn get_internship(client: Client, session: String) -> Result<impl Reply, Rejecti
 		br{}
 		h2 { "Do we get paid?"}
 		p {"No"}
+	}, client, session)?)
+}
+
+fn get_pbr(client: Client, session: String) -> Result<impl Reply, Rejection> {
+	Ok(page("Psi Beta Rho", html! {
+		h1 { "Psi Beta Rho" }
+		h2 { "What is Psi Beta Rho?"}
+		p { "Psi Beta Rho, also known as PBR, is UCLA's competetive cybersecurity team! We are a group of students who are passionate about learning more about cybersecurity and competing at CTFs. PBR attends a variety of different cybersecurity competitions throughout the year by we primarily compete in capture the flag (CTF) competitions." }
+		br{}
+		h2 { "What are CTFs?"}
+		p {"CTFs or capture the flag competitions are jeapardy style cybersecurity competitions where teams compete to solve a variety of problems from various different categories. The goal of each challenge is to find a particular flag which is some sort of string which can be submitted to earn points. For an example of what CTF challenges look like, be sure to check out the Challenges page on this site."}
+		br{}
+		h2 { "Do I need to have a ton of cybersecurity experience?"}
+		p { "No! Psi Beta Rho is open to all skill levels. Whether you are just launching your cybersecurity career or are already an experienced professional, PBR is for you!" }
+		br{}
+		h2 { "How can I join?" }
+		p { "If you are on the ACM Cyber mailing list, we will make an announcement when applications to join PBR are open. We also run weekly practices that are open to any UCLA student so feel free to stop by to check out the team! For more information or to ask questions, be sure to join the ACM Cyber Discord." }
 	}, client, session)?)
 }
 
@@ -651,6 +669,7 @@ pub fn run(port: u16, pool: ClientPool) {
 		.or(get.clone().and(path("challenges")).and(end()).and(invalid.clone()).and_then(get_challenges))
 		.or(get.clone().and(path("scoreboard")).and(end()).and_then(get_scoreboard))
 		.or(get.clone().and(path("internship")).and(end()).and_then(get_internship))
+		.or(get.clone().and(path("pbr")).and(end()).and_then(get_pbr))
 		.or(get.clone().and(path("profile")).and(end()).and_then(get_profile))
 		.or(get.clone().and(path("register")).and(end()).and_then(get_register))
 		.or(get.clone().and(path("login")).and(end()).and_then(get_login))
