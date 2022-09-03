@@ -44,6 +44,12 @@ fn make_body(page: &str, content: Markup, mut client: Client, session: String) -
 			head {
 				meta charset="utf-8";
 				meta name="viewport" content="width=device-width, initial-scale=1";
+				meta property="og:title" content={ @if page.len() > 0 { (page) " | " } (title) };
+				meta property="og:site_name" content="ACM Cyber at UCLA";
+				meta property="og:description" content="ACM Cyber at UCLA is a group of students dedicated to creating a community in which both experts and beginners alike can grow in the field of cybersecurity skills and knowledge. We want to make cybersecurity simple and accessible for everyone. We hold workshops throughout each quarter geared towards novices and hobbyists curious about the world of cybersecurity in addition to Capture The Flag (CTF) competitions in which teams can participate collaboratively to solve cybersecurity challenges.";
+				meta property="og:type" content="website";
+				meta property="og:image" content="/static/cyber-motif-applied.png";
+				meta property="twitter:card" content="summary_large_image";
 				title { @if page.len() > 0 { (page) " | " } (title) }
 				link rel="stylesheet" href="/static/style.css";
 				link rel="icon" type="image/png" href="/static/logo.svg";
