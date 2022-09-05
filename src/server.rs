@@ -50,6 +50,7 @@ fn make_body(page: &str, content: Markup, mut client: Client, session: String) -
 				meta property="og:type" content="website";
 				meta property="og:image" content="/static/cyber-motif-applied.png";
 				meta property="twitter:card" content="summary_large_image";
+				meta name="theme-color" content="#ffba44";
 				title { @if page.len() > 0 { (page) " | " } (title) }
 				link rel="stylesheet" href="/static/style.css";
 				link rel="icon" type="image/png" href="/static/logo.svg";
