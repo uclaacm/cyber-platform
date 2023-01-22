@@ -326,7 +326,7 @@ fn get_pbr(client: Client, session: String) -> Result<impl Reply, Rejection> {
 		h2 { "What is Psi Beta Rho?"}
 		p { "Psi Beta Rho, also known as PBR, is UCLA's competetive cybersecurity team! We are a group of students who are passionate about learning more about cybersecurity and competing at CTFs. PBR attends a variety of different cybersecurity competitions throughout the year by we primarily compete in capture the flag (CTF) competitions." }
 		h2 { "What are CTFs?"}
-		p {"CTFs or capture the flag competitions are jeapardy style cybersecurity competitions where teams compete to solve a variety of problems from various different categories. The goal of each challenge is to find a particular flag which is some sort of string which can be submitted to earn points. For an example of what CTF challenges look like, be sure to check out the Challenges page on this site."}
+		p {"CTFs or capture the flag competitions are jeopardy style cybersecurity competitions where teams compete to solve a variety of problems from various different categories. The goal of each challenge is to find a particular flag which is some sort of string which can be submitted to earn points. For an example of what CTF challenges look like, be sure to check out the Challenges page on this site."}
 		h2 { "Do I need to have a ton of cybersecurity experience?"}
 		p { "No! Psi Beta Rho is open to all skill levels. Whether you are just launching your cybersecurity career or are already an experienced professional, PBR is for you!" }
 		h2 { "How can I join?" }
