@@ -66,7 +66,7 @@ fn make_body(page: &str, content: Markup, mut client: Client, session: String) -
 						li { a href="/challenges" { "Challenges" } }
 						li { a href="/scoreboard" { "Scoreboard" } }
 						li { a href="/pbr" {"PBR"} }
-						li { a href="/internship" { "Internship" } }
+// 						li { a href="/internship" { "Internship" } }
 						@if count > 0 {
 							// li { a href="/rewards" { "Rewards" } }
 							li { a href="/profile" { "Profile" } }
@@ -108,7 +108,7 @@ fn get_almanac(mut client: Client, session: String) -> Result<impl Reply, Reject
 		&[]));
 	Ok(page("Events", html! {
 		script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" {}
-		h1 { "Spring 2022 Events" }
+		h1 { "Winter 2023 Events" }
 		section class="events tiles" {
 			
 			ul {
@@ -304,21 +304,21 @@ fn get_scoreboard(mut client: Client, session: String) -> Result<impl Reply, Rej
 	}, client, session)?)
 }
 
-fn get_internship(client: Client, session: String) -> Result<impl Reply, Rejection> {
-	Ok(page("Internship", html! {
-		h1 { "All About the Cyber Internship" }
-		h2 { "Being a Cyber Intern"}
-		p { "You might be wondering....what's it take to be a cyber intern? Do I have to be the greatest hacker of all time?" }
-		p { "The answer is a resounding no. We want people who are excited to learn and teach about cyber to join us!"}
-		p {" As a cyber intern you'll work alongside officers to conceptualize and build workshops. You will get to concoct your own challenges for both workshops and the CTF After Dark events. But don't worry! You will have a set of mentors (and the whole team) to help you along the way. "}
-		p {" After a quarter of serving as a Cyber intern, you will *ascend* to officer."}
-		h2 { "Applying"}
-		p {"If you are on the ACM general mailing list, you'll receive an email when all intern program applications (not just Cyber) are open. Use that link and answer the Cyber specific questions."}
-		p {"From there you'll receive updates about next steps, likely an interview with a current officer. It is not a rigorous process and overall we want you to be 100% yourself. You don't need to be the world's up-and-coming white hat hacker to fit with the Cyber team :-)"}
-		h2 { "Do we get paid?"}
-		p {"No"}
-	}, client, session)?)
-}
+// fn get_internship(client: Client, session: String) -> Result<impl Reply, Rejection> {
+// 	Ok(page("Internship", html! {
+// 		h1 { "All About the Cyber Internship" }
+// 		h2 { "Being a Cyber Intern"}
+// 		p { "You might be wondering....what's it take to be a cyber intern? Do I have to be the greatest hacker of all time?" }
+// 		p { "The answer is a resounding no. We want people who are excited to learn and teach about cyber to join us!"}
+// 		p {" As a cyber intern you'll work alongside officers to conceptualize and build workshops. You will get to concoct your own challenges for both workshops and the CTF After Dark events. But don't worry! You will have a set of mentors (and the whole team) to help you along the way. "}
+// 		p {" After a quarter of serving as a Cyber intern, you will *ascend* to officer."}
+// 		h2 { "Applying"}
+// 		p {"If you are on the ACM general mailing list, you'll receive an email when all intern program applications (not just Cyber) are open. Use that link and answer the Cyber specific questions."}
+// 		p {"From there you'll receive updates about next steps, likely an interview with a current officer. It is not a rigorous process and overall we want you to be 100% yourself. You don't need to be the world's up-and-coming white hat hacker to fit with the Cyber team :-)"}
+// 		h2 { "Do we get paid?"}
+// 		p {"No"}
+// 	}, client, session)?)
+// }
 
 fn get_pbr(client: Client, session: String) -> Result<impl Reply, Rejection> {
 	Ok(page("Psi Beta Rho", html! {
@@ -670,7 +670,6 @@ pub fn run(port: u16, pool: ClientPool) {
 	let routes = get.clone().and(end()).and_then(get_home)
 		.or(get.clone().and(path("challenges")).and(end()).and(invalid.clone()).and_then(get_challenges))
 		.or(get.clone().and(path("scoreboard")).and(end()).and_then(get_scoreboard))
-		.or(get.clone().and(path("internship")).and(end()).and_then(get_internship))
 		.or(get.clone().and(path("pbr")).and(end()).and_then(get_pbr))
 		.or(get.clone().and(path("profile")).and(end()).and_then(get_profile))
 		.or(get.clone().and(path("register")).and(end()).and_then(get_register))
