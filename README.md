@@ -1,5 +1,5 @@
-# Cyber Platform
-Website and CTF platform for ACM Cyber written in Rust! Visit the currently deployed platform at [https://acmcyber.com/](https://acmcyber.com/).
+# [Old] Cyber Platform
+Old website and CTF platform for ACM Cyber written in Rust!
 
 ## Building the Platform
 
