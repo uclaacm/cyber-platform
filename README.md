@@ -33,4 +33,4 @@ Once you have set up all of the above dependencies, run the following command (w
 ```
 
 # Contact
-If you have any questions about the cyber platform, please reach out to ACM Cyber (uclacyber@gmail.com).
+If you have any questions about the cyber platform, please reach out to ACM Cyber (uclacyber+old-platform@gmail.com).
